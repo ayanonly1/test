@@ -32,13 +32,13 @@ var dataStore = {
         },
         "employee": {
             fields: [{
-                name: "Customer Name",
+                name: "Employee Name",
                 dataGenerator: lib.generateName,
             }, {
-                name: "Customer Email",
+                name: "Employee Email",
                 dataGenerator: lib.generateEmail,
             }, {
-                name: "Order Date",
+                name: "Employee Joining Date",
                 dataGenerator: function() {
                     var date = "";
                     date += lib.generateRandomNumber(1, 30);
@@ -49,15 +49,8 @@ var dataStore = {
                     return date;
                 }
             }, {
-                name: "Order Amount",
+                name: "Employee Salary",
                 dataGenerator: lib.genRandomNoGenerator(1, 10000, 2)
-            }, {
-                name: "Profit",
-                arg: "Order Amount",
-                dataGenerator: function(orderAmount) {
-                    orderAmount = orderAmount || 10;
-                    return lib.generateRandomNumber(-orderAmount / 4, orderAmount / 2, 2);
-                }
             }],
             data: []
         }
