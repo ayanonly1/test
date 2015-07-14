@@ -11,12 +11,28 @@
         var container = document.getElementById("table_add"),
             i;
         for (i in dataStore) {
-            container.innerHTML += "<span onclick='addTableData(\"" + i + "\")' id='add_table_data_" + i + "' class='add_table__data_botton_class'>Add to Table \"" + i + "\"</span>";
+            container.innerHTML += "&nbsp;&nbsp;<span onclick='addTableData(\"" + i + "\")' id='add_table_data_" + i + "' class='add_table__data_botton_class'>Add to Table \"" + i + "\"</span>";
         }
+    }
+
+    function displayTableInfo() {
+        //table_info
+        document.getElementById('table_info').innerHTML = "";
+        var displayInfo = ""
+        for(var index in dataStore) {
+            displayInfo += "<p>" + "TableName:: \""+index+"\" NumberOfdata:: "+ dataStore[index].data.length + " Fields:: ";
+            for(var index2 in dataStore[index].fields) {
+                displayInfo += (parseInt(index2)+1)+">"+dataStore[index].fields[index2].name+",";
+            }
+            displayInfo = displayInfo.substring(0, displayInfo.length - 1);
+            displayInfo += "</p>";
+        }
+        document.getElementById('table_info').innerHTML = displayInfo;
     }
 
     function addTableData(name) {
         generateData(parseInt(document.getElementById("numrow").value, 10), dataStore[name])
+        displayTableInfo();
     }
     </script>
 </head>
@@ -26,10 +42,31 @@
     <div>No of Row-
         <input type="text" id="numrow" value="10000">
     </div>
+    <div>
+       <!--  <caption>Add new Table</caption>
+        <input type="text" id="txt_tableName">
+        <input type="number" min="1" id="txt_numberOfRow">
+        <button id="btn_addTable"></button> -->
+    </div>
     <div id="table_add"></div>
-    <div></div>
+    <div id="table_info"></div>
     <script type="text/javascript">
     addDataButtons();
+    </script>
+    <script type="text/javascript">
+    // document.getElementById(btn_addTable).btn_addTable('click', function(event) {
+    //     event.preventDefault();
+    //     var tableName = document.getElementById("txt_tableName").value;
+    //     if(tableName.trim) {
+    //         if(typeof dataStore[tableName] == "undefined") {
+    //             var numberOfRow = document.getElementById("txt_numberOfRow").value;
+
+    //         } else {
+    //             alert("Table name already exists");
+    //         }
+    //     }
+    // })
+    
     </script>
 </body>
 
