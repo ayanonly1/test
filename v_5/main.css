@@ -13,3 +13,8 @@
 .add_table__data_botton_class:hover {
 	background-color: #c0bfbf ;
 }
+
+#table_info table {
+	width: 100%;
+	margin-top: 5%;
+}

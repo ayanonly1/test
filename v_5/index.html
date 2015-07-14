@@ -17,14 +17,15 @@
     function displayTableInfo() {
         //table_info
         document.getElementById('table_info').innerHTML = "";
-        var displayInfo = ""
+        var displayInfo = "";
         for(var index in dataStore) {
-            displayInfo += "<p>" + "TableName:: \""+index+"\" NumberOfdata:: "+ dataStore[index].data.length + " Fields:: ";
+            displayInfo += "<table border='1'><tr><th>Table Name</th><th>Number of Data</th><th>Fields(type)</th></tr>";
+            displayInfo += "<tr><td>" + index+"</td><td>"+ dataStore[index].data.length + "</td><td>";
             for(var index2 in dataStore[index].fields) {
                 displayInfo += (parseInt(index2)+1)+">"+dataStore[index].fields[index2].name+"("+((dataStore[index].data[0])?typeof dataStore[index].data[0][index2]:"undefined type")+"), ";
             }
             displayInfo = displayInfo.substring(0, displayInfo.length - 1);
-            displayInfo += "</p>";
+            displayInfo += "</td></tr></table>";
         }
         document.getElementById('table_info').innerHTML = displayInfo;
     }
