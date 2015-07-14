@@ -53,5 +53,23 @@ var dataStore = {
                 dataGenerator: lib.genRandomNoGenerator(1, 10000, 2)
             }],
             data: []
+        },
+        "student": {
+            fields: [{
+                name: "Student Name",
+                dataGenerator: lib.generateName,
+            }, {
+                name: "Student DOB",
+                dataGenerator: function() {
+                    var date = "";
+                    date += lib.generateRandomNumber(1, 30);
+                    date += "/";
+                    date += lib.generateRandomNumber(1, 12);
+                    date += "/";
+                    date += lib.generateRandomNumber(2010, 2016);
+                    return date;
+                }
+            }],
+            data: []
         }
     };

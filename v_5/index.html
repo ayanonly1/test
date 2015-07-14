@@ -21,7 +21,7 @@
         for(var index in dataStore) {
             displayInfo += "<p>" + "TableName:: \""+index+"\" NumberOfdata:: "+ dataStore[index].data.length + " Fields:: ";
             for(var index2 in dataStore[index].fields) {
-                displayInfo += (parseInt(index2)+1)+">"+dataStore[index].fields[index2].name+",";
+                displayInfo += (parseInt(index2)+1)+">"+dataStore[index].fields[index2].name+"("+((dataStore[index].data[0])?typeof dataStore[index].data[0][index2]:"undefined type")+"), ";
             }
             displayInfo = displayInfo.substring(0, displayInfo.length - 1);
             displayInfo += "</p>";
@@ -38,7 +38,7 @@
 
 <body>
     <div></div>
-    <div>No of Row-
+    <div>Number of rows
         <input type="text" id="numrow" value="10000">
     </div>
     <div>
@@ -51,6 +51,7 @@
     <div id="table_info"></div>
     <script type="text/javascript">
     addDataButtons();
+    displayTableInfo();
     </script>
     <script type="text/javascript">
     // document.getElementById(btn_addTable).btn_addTable('click', function(event) {
