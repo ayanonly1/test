@@ -3,37 +3,22 @@
 
 <head>
     <title>FusionCharts Dev Samples</title>
-    <link href="main.css" type="text/css" rel="stylesheet" >
+    <link href="main.css" type="text/css" rel="stylesheet">
+    <script type="text/javascript" src="lib.js"></script>
+    <script type="text/javascript" src="data.js"></script>
     <script type="text/javascript">
-    var dataStore = {},
-        tableName = ["order"];
-
     function addDataButtons() {
         var container = document.getElementById("table_add"),
             i;
-        for (i = 0; i < tableName.length; i++) {
-            container.innerHTML += "<span onclick='addTableData(" + i + ")' id='add_table_data_" + tableName[i] + "' class='add_table__data_botton_class'>Add to Table \"" + tableName[i] + "\"</span>";
+        for (i in dataStore) {
+            container.innerHTML += "<span onclick='addTableData(\"" + i + "\")' id='add_table_data_" + i + "' class='add_table__data_botton_class'>Add to Table \"" + i + "\"</span>";
         }
     }
 
-    function addTableData(index) {
-        var table_name = tableName[index],
-        data = generateData(parseInt(document.getElementById("numrow").value, 10), table_name),
-        tableData,
-        x;
-        if (!dataStore[table_name]){
-            dataStore[table_name] = {};
-        }
-        tableData = dataStore[table_name];
-        for (x in data){
-            if (!tableData[x]){
-                tableData[x] = [];
-            }
-            tableData[x] = tableData[x].concat(data[x]);
-        }
+    function addTableData(name) {
+        generateData(parseInt(document.getElementById("numrow").value, 10), dataStore[name])
     }
     </script>
-    <script type="text/javascript" src="data_generator.js"></script>
 </head>
 
 <body>
