@@ -89,7 +89,9 @@ var possibleTxt = "abcdefghijklmnopqrstuvwxyz0123456789",
         }
     },
     // max no od data can be generated synchronously
-    maxIteration = 300000;
+    maxIteration = 300000,
+
+    benchMarkListner = [];
 /*
  * Function that will generate any no of data. 
  * This function checks whether the data can be generated synchronously or not
@@ -161,4 +163,61 @@ function gendata(no_entry, tableConf, callBack) {
 
     callBack && callBack(no_entry);
 
+}
+
+
+function benchmark(opName, opConfig) {
+    this.opName = opName;
+    this.opConfig = opConfig;
+}
+
+benchmark.prototype = {
+    startTimer: function() {
+        if (!this._started) {
+            this.startTime = new Date().getTime();
+            this._started = true;
+        } else {
+            console && console.log("Already started.....");
+        }
+
+    },
+    stopTimer: function(finishInfo) {
+        var benchT = this;
+        if (benchT._started) {
+            if (!benchT._stopped) {
+                this.finishInfo = finishInfo;
+                benchT.finishTime = new Date().getTime();
+                benchT.duration = benchT.finishTime - benchT.startTime;
+                benchT._stopped = true;
+                setTimeout(function() {
+                    var i, l = benchMarkListner.length;
+                    for (i = 0; i < l; i++) {
+                        benchMarkListner[i](benchT);
+                    }
+                }, 0);
+            } else {
+                console && console.log("Already stopped....");
+            }
+        } else {
+            console && console.log("Not even started...");
+        }
+    }
+};
+benchmark.prototype.constructor = benchmark;
+
+function addBenchMarkingListner(listner) {
+    if (typeof listner === "function") {
+        benchMarkListner.push(listner);
+    }
+}
+
+function removeBenchMarkingListner(listner) {
+    var i, len = benchMarkListner.length;
+    if (typeof listner === "function") {
+        for (i = len - 1; i >= 0; i--) {
+            if (benchMarkListner[i] === listner) {
+                benchMarkListner.splice(i, 1);
+            }
+        }
+    }
 }
