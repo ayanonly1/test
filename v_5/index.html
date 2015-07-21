@@ -14,45 +14,52 @@
         }
     }
 
-    function displayTableInfo() {
-        //table_info
-        document.getElementById('table_info').innerHTML = "";
-        var displayInfo = "";
-        for(var index in dataStore) {
-            displayInfo += "<table border='1'><tr><th>Table Name</th><th>Number of Data</th><th>Fields(type)</th></tr>";
-            displayInfo += "<tr><td>" + index+"</td><td>"+ dataStore[index].data.length + "</td><td>";
-            for(var index2 in dataStore[index].fields) {
-                displayInfo += (parseInt(index2)+1)+">"+dataStore[index].fields[index2].name+"("+((dataStore[index].data[0])?typeof dataStore[index].data[0][index2]:"undefined type")+"), ";
-            }
-            displayInfo = displayInfo.substring(0, displayInfo.length - 1);
-            displayInfo += "</td></tr></table>";
-        }
-        document.getElementById('table_info').innerHTML = displayInfo;
-    }
+    // function displayTableInfo() {
+    //     //table_info
+    //     document.getElementById('table_info').innerHTML = "";
+    //     var displayInfo = "";
+    //     for(var index in dataStore) {
+    //         displayInfo += "<table border='1'><tr><th>Table Name</th><th>Number of Data</th><th>Fields(type)</th></tr>";
+    //         displayInfo += "<tr><td>" + index+"</td><td>"+ dataStore[index].data.length + "</td><td>";
+    //         for(var index2 in dataStore[index].fields) {
+    //             displayInfo += (parseInt(index2)+1)+">"+dataStore[index].fields[index2].name+"("+((dataStore[index].data[0])?typeof dataStore[index].data[0][index2]:"undefined type")+"), ";
+    //         }
+    //         displayInfo = displayInfo.substring(0, displayInfo.length - 1);
+    //         displayInfo += "</td></tr></table>";
+    //     }
+    //     document.getElementById('table_info').innerHTML = displayInfo;
+    // }
 
     function addTableData(name) {
         generateData(parseInt(document.getElementById("numrow").value, 10), dataStore[name])
-        displayTableInfo();
+        //displayTableInfo();
+        if(document.getElementById("dataLength_"+name)) {
+            document.getElementById("dataLength_"+name).innerHTML = dataStore[name].data.length;
+        }
     }
     </script>
 </head>
 
 <body>
     <div></div>
-    <div>Number of rows
-        <input type="text" id="numrow" value="10000">
-    </div>
+    
     <div>
        <!--  <caption>Add new Table</caption>
         <input type="text" id="txt_tableName">
         <input type="number" min="1" id="txt_numberOfRow">
         <button id="btn_addTable"></button> -->
     </div>
+    <div id="div_tab">
+        <div id="div_listOfTable"></div>
+        <div id="div_info"></div>
+    </div>
+    <div>Number of rows
+        <input type="text" id="numrow" value="10000">
+    </div>
     <div id="table_add"></div>
     <div id="table_info"></div>
     <script type="text/javascript">
     addDataButtons();
-    displayTableInfo();
     </script>
     <script type="text/javascript">
     // document.getElementById(btn_addTable).btn_addTable('click', function(event) {
@@ -68,6 +75,26 @@
     //     }
     // })
     
+    (function() {
+        // populate the tab based on number of tabs
+        var tabHTML = "";
+        for(var tableIndex in dataStore) {
+            tabHTML += "<div onclick='displayContent(\""+tableIndex+"\")' class='tab'>"+tableIndex+"</div>";
+        }
+        document.getElementById("div_listOfTable").innerHTML = tabHTML;
+        
+    })();
+    var displayContent = (function(tabIndex) {
+        var displayInfo = "";
+        displayInfo += "<table border='1'><tr><th>Table Name</th><th>Number of Data</th><th>Fields(type)</th></tr>";
+        displayInfo += "<tr><td>"+tabIndex+"</td><td id='dataLength_"+tabIndex+"'>"+ dataStore[tabIndex].data.length + "</td><td>";
+        for(var index2 in dataStore[tabIndex].fields) {
+            displayInfo += (parseInt(index2)+1)+">"+dataStore[tabIndex].fields[index2].name+"("+((dataStore[tabIndex].data[0])?typeof dataStore[tabIndex].data[0][index2]:"undefined type")+"), ";
+        }
+        displayInfo = displayInfo.substring(0, displayInfo.length - 1);
+        displayInfo += "</td></tr></table>";
+        document.getElementById("div_info").innerHTML = displayInfo;
+    });
     </script>
 </body>
 

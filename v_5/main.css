@@ -1,3 +1,7 @@
+body, html {
+	width: 100%;
+	height: 100%;
+}
 .add_table__data_botton_class {
 	display: inline-block;
 	*zoom: 1; *display: inline;
@@ -17,4 +21,26 @@
 #table_info table {
 	width: 100%;
 	margin-top: 5%;
+}
+
+.tab {
+	cursor: pointer;
+	width: 10%;
+	height: 68%;
+	float: left;
+	background-color: #c0bfbf;
+	margin-left: 5px;
+	margin-right: 5px;
+	text-align: center;
+}
+#div_listOfTable {
+	width: 100%;
+	height: 30%;
+	
+}
+#div_tab {
+	width:100%;
+	height: 50%;
+	padding-top: 10px;
+	border: 1px solid red;
 }
