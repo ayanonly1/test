@@ -14,27 +14,24 @@
         }
     }
 
-    // function displayTableInfo() {
-    //     //table_info
-    //     document.getElementById('table_info').innerHTML = "";
-    //     var displayInfo = "";
-    //     for(var index in dataStore) {
-    //         displayInfo += "<table border='1'><tr><th>Table Name</th><th>Number of Data</th><th>Fields(type)</th></tr>";
-    //         displayInfo += "<tr><td>" + index+"</td><td>"+ dataStore[index].data.length + "</td><td>";
-    //         for(var index2 in dataStore[index].fields) {
-    //             displayInfo += (parseInt(index2)+1)+">"+dataStore[index].fields[index2].name+"("+((dataStore[index].data[0])?typeof dataStore[index].data[0][index2]:"undefined type")+"), ";
-    //         }
-    //         displayInfo = displayInfo.substring(0, displayInfo.length - 1);
-    //         displayInfo += "</td></tr></table>";
-    //     }
-    //     document.getElementById('table_info').innerHTML = displayInfo;
-    // }
-
+    var convertNumberToWord = (function(number) {
+        if(number<100) {
+            return number;
+        }
+        var wordArray = ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"];
+        var word = "";
+        var tempData = number.toString();
+        if(tempData.length>2) {
+            var digit = parseInt(tempData[tempData.length-3]);
+            word = tempData[tempData.length-3] + " Hundred "+(parseInt(tempData[tempData.length-2]+tempData[tempData.length-1])?" And ":"")+(parseInt(tempData[tempData.length-2])?tempData[tempData.length-2]:"")+tempData[tempData.length-1];
+        }
+        return word;
+    });
     function addTableData(name) {
         generateData(parseInt(document.getElementById("numrow").value, 10), dataStore[name])
         //displayTableInfo();
         if(document.getElementById("dataLength_"+name)) {
-            document.getElementById("dataLength_"+name).innerHTML = dataStore[name].data.length;
+            document.getElementById("dataLength_"+name).innerHTML = convertNumberToWord(dataStore[name].data.length);
         }
     }
     </script>
@@ -62,19 +59,6 @@
     addDataButtons();
     </script>
     <script type="text/javascript">
-    // document.getElementById(btn_addTable).btn_addTable('click', function(event) {
-    //     event.preventDefault();
-    //     var tableName = document.getElementById("txt_tableName").value;
-    //     if(tableName.trim) {
-    //         if(typeof dataStore[tableName] == "undefined") {
-    //             var numberOfRow = document.getElementById("txt_numberOfRow").value;
-
-    //         } else {
-    //             alert("Table name already exists");
-    //         }
-    //     }
-    // })
-    
     (function() {
         // populate the tab based on number of tabs
         var tabHTML = "";
@@ -87,7 +71,7 @@
     var displayContent = (function(tabIndex) {
         var displayInfo = "";
         displayInfo += "<table border='1'><tr><th>Table Name</th><th>Number of Data</th><th>Fields(type)</th></tr>";
-        displayInfo += "<tr><td>"+tabIndex+"</td><td id='dataLength_"+tabIndex+"'>"+ dataStore[tabIndex].data.length + "</td><td>";
+        displayInfo += "<tr><td>"+tabIndex+"</td><td id='dataLength_"+tabIndex+"'>"+ convertNumberToWord(dataStore[tabIndex].data.length) + "</td><td>";
         for(var index2 in dataStore[tabIndex].fields) {
             displayInfo += (parseInt(index2)+1)+">"+dataStore[tabIndex].fields[index2].name+"("+((dataStore[tabIndex].data[0])?typeof dataStore[tabIndex].data[0][index2]:"undefined type")+"), ";
         }

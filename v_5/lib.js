@@ -88,24 +88,20 @@ var possibleTxt = "abcdefghijklmnopqrstuvwxyz0123456789",
             return date;
         }
     },
-    // max no od data can be generated synchronously
-    maxIteration = 300000;
-/*
- * Function that will generate any no of data. 
- * This function checks whether the data can be generated synchronously or not
- */
+
+    maxIteration = 100000;
+
 
 function generateData(no_entry, tableConf, callBack) {
-    var doneCount = 0,
+    var i = 0,
+        j,
+        data = tableConf.data,
+        dataLen = data.length,
+        fields = tableConf.fields,
+        columnLength = fields.length,
+        columConfig,
+        row,
         remaningCount,
-        localCallBack = function(noDone) {
-            doneCount += noDone;
-            if (doneCount === no_entry) {
-                callBack && setTimeout(function() {
-                    callBack(no_entry, tableConf.data.length);
-                }, 0);
-            }
-        },
         fieldsIndex = tableConf.fieldsIndex; // this should be created only once and should be reused
 
     if (!fieldsIndex) {
@@ -115,50 +111,28 @@ function generateData(no_entry, tableConf, callBack) {
         }
         tableConf.fieldsIndex = fieldsIndex;
     }
-
-    remaningCount = no_entry;
-    // check whetehr generation can be synchronously
-    if (maxIteration < no_entry) {
-        while (remaningCount >= maxIteration) {
-            // do asynchronous data generation
-            setTimeout(function() {
-                gendata(maxIteration, tableConf, localCallBack);
-            }, 1);
-            remaningCount -= maxIteration;
-        }
-    }
-    remaningCount && gendata(remaningCount, tableConf, localCallBack);
-}
-
-/*
- * Function to generate given no data synchronously
- */
-
-function gendata(no_entry, tableConf, callBack) {
-    var i = 0,
-        j,
-        data = tableConf.data,
-        dataLen = data.length,
-        fields = tableConf.fields,
-        columnLength = fields.length,
-        columConfig,
-        row,
-        fieldsIndex = tableConf.fieldsIndex; // this should be created only once and should be reused
-
-
-    for (i = 0; i < no_entry; i++, dataLen++) {
-        row = [];
-        for (j = 0; j < columnLength; j++) {
-            columConfig = fields[j];
-            if (columConfig.arg) {
-                row[j] = columConfig.dataGenerator(row[fieldsIndex[columConfig.arg]])
-            } else {
-                row[j] = columConfig.dataGenerator()
+    // if (maxIteration < no_entry) {
+    //     remaningCount = no_entry;
+    //     while (remaningCount > 0){
+    //         setTimeout (function (){
+    //             generateData()
+    //         }, 1);
+    //     }
+    // } else {
+        for (i = 0; i < no_entry; i++, dataLen++) {
+            row = [];
+            for (j = 0; j < columnLength; j++) {
+                columConfig = fields[j];
+                if (columConfig.arg) {
+                    row[j] = columConfig.dataGenerator(row[fieldsIndex[columConfig.arg]])
+                } else {
+                    row[j] = columConfig.dataGenerator()
+                }
             }
+            data[dataLen] = row;
         }
-        data[dataLen] = row;
-    }
-
-    callBack && callBack(no_entry);
-
+    // }
+    callBack && setTimeout(function() {
+        callBack(no_entry, dataLen);
+    }, 0);
 }
