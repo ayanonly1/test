@@ -18,14 +18,46 @@
         if(number<100) {
             return number;
         }
-        var wordArray = ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"];
-        var word = "";
-        var tempData = number.toString();
-        if(tempData.length>2) {
-            var digit = parseInt(tempData[tempData.length-3]);
-            word = tempData[tempData.length-3] + " Hundred "+(parseInt(tempData[tempData.length-2]+tempData[tempData.length-1])?" And ":"")+(parseInt(tempData[tempData.length-2])?tempData[tempData.length-2]:"")+tempData[tempData.length-1];
+        // var wordArray = ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"];
+         var word = "";
+         var tempData = number.toString();
+        // if(tempData.length>3) {
+        //     if(tempData[tempData.length-4] != "0") {
+        //         word += tempData[tempData.length-4]+" Thousand ";
+        //     } else {
+
+        //     }
+        // }
+        // if(tempData.length>2) {
+        //     var digit = parseInt(tempData[tempData.length-3]);
+        //     word = tempData[tempData.length-3] + " Hundred ";
+        //     if(tempData[tempData.length-2] != "0") {
+        //         word += " And " + tempData[tempData.length-2] + tempData[tempData.length-1];
+        //     } else {
+        //         if(tempData[tempData.length-1] != "0") {
+        //            word +=  tempData[tempData.length-1];
+        //         }
+        //     }
+        // }con
+        //console.log(typeof tempData[tempData.length-1]+"   "+tempData[tempData.length-1]);
+        if(tempData.length<9) {
+            var zero = "";
+            for(var index=0;index<(9-tempData.length); index++) {
+                zero += "0";
+            }
+            tempData = zero+tempData;
+        }console.log(tempData);
+        word = (((tempData[tempData.length-7]!="0")?tempData[tempData.length-7]:"")+((tempData[tempData.length-6]!="0")?tempData[tempData.length-6]:((tempData[tempData.length-7]!=0)?tempData[tempData.length-6]:""))+((tempData[tempData.length-7]!=0||tempData[tempData.length-6]!=0)?" Lakh ":""))+ ((tempData[tempData.length-5]!="0"?tempData[tempData.length-5]:"")+(tempData[tempData.length-4]!="0"?tempData[tempData.length-4]:(tempData[tempData.length-5]!="0"?tempData[tempData.length-4]:""))+((tempData[tempData.length-5]!="0"||tempData[tempData.length-4]!="0")?" Thousand ":"")) + ((tempData[tempData.length-3]!="0")?(tempData[tempData.length-3] + " Hundred "):"") +  ((tempData[tempData.length-2]!="0"?tempData[tempData.length-2]:"")+((tempData[tempData.length-1]!="0")?tempData[tempData.length-1]:((tempData[tempData.length-2]!="0")?tempData[tempData.length-1]:"")));
+        var flag = 0;
+        for(var index=0;index<=tempData.length-8;index++) {
+            if(tempData[index]!="0") {console.log(tempData[index]+" "+index);
+                word = tempData.slice(index, tempData.length-7)+" Crore " + word;
+                break;
+            }
+
         }
-        return word;
+
+        return word+"("+number+")";
     });
     function addTableData(name) {
         generateData(parseInt(document.getElementById("numrow").value, 10), dataStore[name])
