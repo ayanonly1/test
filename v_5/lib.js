@@ -101,13 +101,9 @@ function generateData(no_entry, tableConf, callBack) {
         localCallBack = function(noDone) {
             doneCount += noDone;
             if (doneCount === no_entry) {
-                console.log("done");
                 callBack && setTimeout(function() {
                     callBack(no_entry, tableConf.data.length);
                 }, 0);
-            }
-            else {
-                console.log("not done");
             }
         },
         fieldsIndex = tableConf.fieldsIndex; // this should be created only once and should be reused
