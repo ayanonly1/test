@@ -88,11 +88,55 @@ var possibleTxt = "abcdefghijklmnopqrstuvwxyz0123456789",
             return date;
         }
     },
+    // max no od data can be generated synchronously
+    maxIteration = 300000,
 
-    maxIteration = 100000;
-
+    benchMarkListner = [];
+/*
+ * Function that will generate any no of data. 
+ * This function checks whether the data can be generated synchronously or not
+ */
 
 function generateData(no_entry, tableConf, callBack) {
+    var doneCount = 0,
+        remaningCount,
+        localCallBack = function(noDone) {
+            doneCount += noDone;
+            if (doneCount === no_entry) {
+                callBack && setTimeout(function() {
+                    callBack(no_entry, tableConf.data.length);
+                }, 0);
+            }
+        },
+        fieldsIndex = tableConf.fieldsIndex; // this should be created only once and should be reused
+        columnLength = tableConf.fields.length;
+    if (!fieldsIndex) {
+        fieldsIndex = {};
+        for (j = 0; j < columnLength; j++) {
+            fieldsIndex[tableConf.fields[j].name] = j;
+        }
+        tableConf.fieldsIndex = fieldsIndex;
+    }
+
+    remaningCount = no_entry;
+    // check whetehr generation can be synchronously
+    if (maxIteration < no_entry) {
+        while (remaningCount >= maxIteration) {
+            // do asynchronous data generation
+            setTimeout(function() {
+                gendata(maxIteration, tableConf, localCallBack);
+            }, 1);
+            remaningCount -= maxIteration;
+        }
+    }
+    remaningCount && gendata(remaningCount, tableConf, localCallBack);
+}
+
+/*
+ * Function to generate given no data synchronously
+ */
+
+function gendata(no_entry, tableConf, callBack) {
     var i = 0,
         j,
         data = tableConf.data,
@@ -101,38 +145,79 @@ function generateData(no_entry, tableConf, callBack) {
         columnLength = fields.length,
         columConfig,
         row,
-        remaningCount,
         fieldsIndex = tableConf.fieldsIndex; // this should be created only once and should be reused
 
-    if (!fieldsIndex) {
-        fieldsIndex = {};
+
+    for (i = 0; i < no_entry; i++, dataLen++) {
+        row = [];
         for (j = 0; j < columnLength; j++) {
-            fieldsIndex[fields[j].name] = j;
-        }
-        tableConf.fieldsIndex = fieldsIndex;
-    }
-    // if (maxIteration < no_entry) {
-    //     remaningCount = no_entry;
-    //     while (remaningCount > 0){
-    //         setTimeout (function (){
-    //             generateData()
-    //         }, 1);
-    //     }
-    // } else {
-        for (i = 0; i < no_entry; i++, dataLen++) {
-            row = [];
-            for (j = 0; j < columnLength; j++) {
-                columConfig = fields[j];
-                if (columConfig.arg) {
-                    row[j] = columConfig.dataGenerator(row[fieldsIndex[columConfig.arg]])
-                } else {
-                    row[j] = columConfig.dataGenerator()
-                }
+            columConfig = fields[j];
+            if (columConfig.arg) {
+                row[j] = columConfig.dataGenerator(row[fieldsIndex[columConfig.arg]])
+            } else {
+                row[j] = columConfig.dataGenerator()
             }
-            data[dataLen] = row;
         }
-    // }
-    callBack && setTimeout(function() {
-        callBack(no_entry, dataLen);
-    }, 0);
+        data[dataLen] = row;
+    }
+
+    callBack && callBack(no_entry);
+
+}
+
+
+function benchmark(opName, opConfig) {
+    this.opName = opName;
+    this.opConfig = opConfig;
+}
+
+benchmark.prototype = {
+    startTimer: function() {
+        if (!this._started) {
+            this.startTime = new Date().getTime();
+            this._started = true;
+        } else {
+            console && console.log("Already started.....");
+        }
+
+    },
+    stopTimer: function(finishInfo) {
+        var benchT = this;
+        if (benchT._started) {
+            if (!benchT._stopped) {
+                this.finishInfo = finishInfo;
+                benchT.finishTime = new Date().getTime();
+                benchT.duration = benchT.finishTime - benchT.startTime;
+                benchT._stopped = true;
+                setTimeout(function() {
+                    var i, l = benchMarkListner.length;
+                    for (i = 0; i < l; i++) {
+                        benchMarkListner[i](benchT);
+                    }
+                }, 0);
+            } else {
+                console && console.log("Already stopped....");
+            }
+        } else {
+            console && console.log("Not even started...");
+        }
+    }
+};
+benchmark.prototype.constructor = benchmark;
+
+function addBenchMarkingListner(listner) {
+    if (typeof listner === "function") {
+        benchMarkListner.push(listner);
+    }
+}
+
+function removeBenchMarkingListner(listner) {
+    var i, len = benchMarkListner.length;
+    if (typeof listner === "function") {
+        for (i = len - 1; i >= 0; i--) {
+            if (benchMarkListner[i] === listner) {
+                benchMarkListner.splice(i, 1);
+            }
+        }
+    }
 }
