@@ -47,3 +47,13 @@ body, html {
 .active {
 	background-color: yellow;
 }
+
+#table_operations {
+	height: 30%;
+	width: 100%;
+	border: 1px solid black;
+}
+
+#table_operations table {
+	width: 95%;
+}
