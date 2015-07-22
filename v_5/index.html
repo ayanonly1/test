@@ -10,7 +10,7 @@
         var container = document.getElementById("table_add"),
             i;
         for (i in dataStore) {
-            container.innerHTML += "&nbsp;&nbsp;<span onclick='addTableData(\"" + i + "\")' id='add_table_data_" + i + "' class='add_table__data_botton_class'>Add to Table \"" + i + "\"</span>";
+            container.innerHTML += "&nbsp;&nbsp;<option value='"+i+"' class='add_table__data_botton_class'>Add to Table \"" + i + "\"</option>";
         }
     }
 
@@ -38,7 +38,9 @@
         }
         return word+"  ("+number+") ";
     });
-    function addTableData(name) {
+    function addTableData() {
+        var sel = document.getElementById("table_add");
+        name = sel.options[sel.selectedIndex].value;alert(name);
         generateData(parseInt(document.getElementById("numrow").value, 10), dataStore[name])
         if(document.getElementById("dataLength_"+name)) {
             displayContent(name);
@@ -71,7 +73,7 @@
     <div>Number of rows
         <input type="text" id="numrow" value="10000">
     </div>
-    <div id="table_add"></div>
+    <div id=""><select id="table_add"></select><button id="btn_addData" onclick="addTableData()">Go</button></div>
     <div id="table_operations">
         Select the operation first
         <div id="div_operationList"></div>
@@ -93,8 +95,8 @@
             }
         }
         var displayInfo = "";
-        displayInfo += "<table border='1'><tr><th>Table Name</th><th>Number of Data</th><th>Fields(type)</th></tr>";
-        displayInfo += "<tr><td>"+tabIndex+"</td><td id='dataLength_"+tabIndex+"'>"+ convertNumberToWord(dataStore[tabIndex].data.length) + "</td><td>";
+        displayInfo += "<table border='1'><tr><th>Number of Data</th><th>Fields(type)</th></tr>";
+        displayInfo += "<tr><td id='dataLength_"+tabIndex+"'>"+ convertNumberToWord(dataStore[tabIndex].data.length) + "</td><td>";
         for(var index2 in dataStore[tabIndex].fields) {
             displayInfo += (parseInt(index2)+1)+">"+dataStore[tabIndex].fields[index2].name+"("+((dataStore[tabIndex].data[0])?typeof dataStore[tabIndex].data[0][index2]:"undefined type")+"), ";
         }
@@ -111,10 +113,26 @@
         document.getElementById("div_listOfTable").innerHTML = tabHTML;
         document.getElementsByClassName('tab')[0].click();
     })();
+    
+    var initializeSort = (function() {
+
+    });
+
+    var initializeSearch = (function() {
+
+    });
+
+    var performOperation = (function(operationName) {
+        if(operationName=="sort") {
+            initializeSort();
+        } else if(operationName == "search") {
+            initializeSearch();
+        }
+    });
     (function() {
         var html = ""
         for(var index in operationArray) {
-            html+="<button>"+operationArray[index].name+"</button>";
+            html+="<button onclick='performOperation(\""+operationArray[index].name+"\")'>"+operationArray[index].name+"</button>";
         }
         document.getElementById("div_operationList").innerHTML = html;
     })();
