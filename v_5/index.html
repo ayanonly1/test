@@ -40,7 +40,7 @@
     });
     function addTableData() {
         var sel = document.getElementById("table_add");
-        name = sel.options[sel.selectedIndex].value;alert(name);
+        name = sel.options[sel.selectedIndex].value;
         generateData(parseInt(document.getElementById("numrow").value, 10), dataStore[name])
         if(document.getElementById("dataLength_"+name)) {
             displayContent(name);
@@ -66,19 +66,38 @@
     </div>
     <div id="div_tab">
         <div id="div_listOfTable"></div>
-        <div id="div_info"></div>
+        <div id="div_info" class="wrapper"></div>
     </div>
-    <br/>
-    <br/>
-    <div>Number of rows
-        <input type="text" id="numrow" value="10000">
-    </div>
-    <div id=""><select id="table_add"></select><button id="btn_addData" onclick="addTableData()">Go</button></div>
-    <div id="table_operations">
-        Select the operation first
-        <div id="div_operationList"></div>
-        <button disabled="true" title="click here to run selected operation">Run</button>
-    </div>
+
+    <div class="wrapper">
+
+        <div class="block">
+            <label for="numrow">Number of rows</label>
+            <input type="text" id="numrow" value="10000">
+        </div>
+        <div id="" class="block">
+            <select id="table_add"></select>
+            <button class="btn" id="btn_addData" onclick="addTableData()">Go</button>
+        </div>
+        
+        <div id="table_operations">
+            <div class="label">Select the operation first</div>
+            <div id="div_operationList"></div>
+            <button class="btn btn-green" disabled="true" title="click here to run selected operation">Run</button>
+        </div>
+
+        <div>
+            <div class="label">Benchmark results</div><br/>
+            <table class="table-bordered">
+                <tr>
+                    <td>Start time</td>
+                    <td>End time</td>
+                    <td>Duration</td>
+                </tr>
+            </table>
+        </div>
+
+    </div><!-- wrapper  End-->
 
     <script type="text/javascript">
     addDataButtons();
@@ -95,7 +114,7 @@
             }
         }
         var displayInfo = "";
-        displayInfo += "<table border='1'><tr><th>Number of Data</th><th>Fields(type)</th></tr>";
+        displayInfo += "<table class='table table-bordered'><tr><th>Number of Data</th><th>Fields(type)</th></tr>";
         displayInfo += "<tr><td id='dataLength_"+tabIndex+"'>"+ convertNumberToWord(dataStore[tabIndex].data.length) + "</td><td>";
         for(var index2 in dataStore[tabIndex].fields) {
             displayInfo += (parseInt(index2)+1)+">"+dataStore[tabIndex].fields[index2].name+"("+((dataStore[tabIndex].data[0])?typeof dataStore[tabIndex].data[0][index2]:"undefined type")+"), ";
@@ -132,7 +151,7 @@
     (function() {
         var html = ""
         for(var index in operationArray) {
-            html+="<button onclick='performOperation(\""+operationArray[index].name+"\")'>"+operationArray[index].name+"</button>";
+            html+="<button class='btn' onclick='performOperation(\""+operationArray[index].name+"\")'>"+operationArray[index].name+"</button>";
         }
         document.getElementById("div_operationList").innerHTML = html;
     })();
