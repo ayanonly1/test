@@ -69,15 +69,6 @@
     addDataButtons();
     </script>
     <script type="text/javascript">
-    (function() {
-        // populate the tab based on number of tabs
-        var tabHTML = "";
-        for(var tableIndex in dataStore) {
-            tabHTML += "<div onclick='displayContent(\""+tableIndex+"\")' class='tab'>"+tableIndex+"</div>";
-        }
-        document.getElementById("div_listOfTable").innerHTML = tabHTML;
-        
-    })();
     var displayContent = (function(tabIndex) {
         var tabElements = document.getElementsByClassName('tab');
         for(var index=0;index<tabElements.length; index++) {
@@ -98,6 +89,16 @@
         displayInfo += "</td></tr></table>";
         document.getElementById("div_info").innerHTML = displayInfo;
     });
+    (function() {
+        // populate the tab based on number of tabs
+        var tabHTML = "";
+        for(var tableIndex in dataStore) {
+            tabHTML += "<div onclick='displayContent(\""+tableIndex+"\")' class='tab'>"+tableIndex+"</div>";
+        }
+        document.getElementById("div_listOfTable").innerHTML = tabHTML;
+        document.getElementsByClassName('tab')[0].click();
+    })();
+    
     </script>
 </body>
 
