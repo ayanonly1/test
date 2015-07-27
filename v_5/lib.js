@@ -166,12 +166,12 @@ function gendata(no_entry, tableConf, callBack) {
 }
 
 
-function benchmark(opName, opConfig) {
+function Benchmark(opName, opConfig) {
     this.opName = opName;
     this.opConfig = opConfig;
 }
 
-benchmark.prototype = {
+Benchmark.prototype = {
     startTimer: function() {
         if (!this._started) {
             this.startTime = new Date().getTime();
@@ -203,7 +203,7 @@ benchmark.prototype = {
         }
     }
 };
-benchmark.prototype.constructor = benchmark;
+Benchmark.prototype.constructor = Benchmark;
 
 function addBenchMarkingListner(listner) {
     if (typeof listner === "function") {

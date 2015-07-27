@@ -6,6 +6,32 @@
     <script type="text/javascript" src="lib.js"></script>
     <script type="text/javascript" src="data.js"></script>
     <script type="text/javascript">
+    window.benchmarkTableElements = [{
+        "name": "OperationName",
+        "manipulate": function() {
+            return (arguments[0])?arguments[0].opName:"";
+        }
+    }, {
+        "name": "Start time",
+        "manipulate": function() {
+            return (arguments[0])?arguments[0].startTime:"";
+        }
+    }, {
+        "name": "End time",
+        "manipulate": function() {
+            return (arguments[0])?arguments[0].endTime:"";
+        }
+    }, {
+        "name": "Duration",
+        "manipulate": function() {
+            return (arguments[0])?arguments[0].duration:"";
+        }
+    }, {
+        "name": "Remarks",
+        "manipulate": function() {
+            return "";
+        }
+    }];//"Operation name", "Start time", "End time", "Duration", "Remarks"
     function addDataButtons() {
         var container = document.getElementById("table_add"),
             i;
@@ -88,12 +114,8 @@
 
         <div>
             <div class="label">Benchmark results</div><br/>
-            <table class="table-bordered">
-                <tr>
-                    <td>Start time</td>
-                    <td>End time</td>
-                    <td>Duration</td>
-                </tr>
+            <table class="table-bordered" id="tbl_benchmark">
+                
             </table>
         </div>
 
@@ -155,6 +177,29 @@
         }
         document.getElementById("div_operationList").innerHTML = html;
     })();
+
+    // this function creates the benchmark table
+    (function() {
+        var trHTML = "<tr>";
+        for(var elementIndex in window.benchmarkTableElements) {
+            trHTML+= "<th>" + benchmarkTableElements[elementIndex].name + "</th>";
+        }
+        trHTML += "</tr>";
+        document.getElementById("tbl_benchmark").innerHTML = trHTML;
+    })();
+
+
+
+    addBenchMarkingListner(function() {
+        var trText = "<tr>";
+        
+        for(var index in window.benchmarkTableElements) {
+            trText += "<td>"+window.benchmarkTableElements[index].manipulate.apply(this, arguments)+"</td>";
+        }
+        trText += "</tr>";
+        document.getElementById('tbl_benchmark').innerHTML += trText;
+    });
+    
     </script>
 </body>
 
