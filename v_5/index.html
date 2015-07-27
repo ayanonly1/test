@@ -7,30 +7,30 @@
     <script type="text/javascript" src="data.js"></script>
     <script type="text/javascript">
     window.benchmarkTableElements = [{
-        "name": "OperationName",
-        "manipulate": function() {console.log(arguments[0]);
+        name: "OperationName",
+        manipulate: function() {console.log(arguments[0]);
             return (arguments[0])?arguments[0].opName:"";
         }
     }, {
-        "name": "Start time",
-        "manipulate": function() {
+        name: "Start time",
+        manipulate: function() {
             var date = new Date(arguments[0].startTime);
             return (arguments[0])?date.toDateString() + " "+ date.toTimeString():"";
         }
     }, {
-        "name": "End time",
-        "manipulate": function() {
+        name: "End time",
+        manipulate: function() {
             var date = new Date(arguments[0].finishTime);
             return (arguments[0])?date.toDateString() + " "+ date.toTimeString():"";
         }
     }, {
-        "name": "Duration (ms)",
-        "manipulate": function() {
+        name: "Duration (ms)",
+        manipulate: function() {
             return (arguments[0])?arguments[0].duration:"";
         }
     }, {
-        "name": "Remarks",
-        "manipulate": function() {
+        name: "Remarks",
+        manipulate: function() {
             return "";
         }
     }];//"Operation name", "Start time", "End time", "Duration", "Remarks"
@@ -76,11 +76,20 @@
     }
 
     var operationArray = [{
-        name: "sort"
+        name: "sort",
+        operation : function(config) {
+
+        }
     }, {
-        name: "search"
+        name: "search",
+        operation: function(config) {
+
+        }
     }, {
-        name: "serialize"
+        name: "serialize",
+        operation: function(config) {
+
+        }
     }];
     
     </script>
