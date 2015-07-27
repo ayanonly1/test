@@ -75,22 +75,53 @@
         }
     }
 
-    var operationArray = [{
-        name: "sort",
-        operation : function(config) {
-
-        }
-    }, {
-        name: "search",
+    var operationArray = {
+    "sort": {
+        click: function() {
+            operationArray.sort.operation();
+        },
         operation: function(config) {
+            var b = new Benchmark("sort");
+            b.startTimer();
+            // do the operation here
 
+
+
+
+            b.stopTimer();
         }
-    }, {
-        name: "serialize",
+    },
+    "search": {
+        click: function() {
+            operationArray.search.operation();
+        },
         operation: function(config) {
+            var b = new Benchmark("search");
+            b.startTimer();
+            // do the operation here
 
+
+
+
+            b.stopTimer();
         }
-    }];
+    },
+    "serialize": {
+        click: function() {
+            operationArray.serialize.operation();
+        },
+        operation: function(config) {
+            var b = new Benchmark("serialize");
+            b.startTimer();
+            // do the operation here
+
+
+
+
+            b.stopTimer();
+        }
+    }
+};
     
     </script>
 </head>
@@ -184,7 +215,7 @@
     (function() {
         var html = ""
         for(var index in operationArray) {
-            html+="<button class='btn' onclick='performOperation(\""+operationArray[index].name+"\")'>"+operationArray[index].name+"</button>";
+            html+="<button class='btn' onclick='operationArray[\"" + index + "\"].click()'>"+index+"</button>";
         }
         document.getElementById("div_operationList").innerHTML = html;
     })();
