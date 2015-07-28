@@ -9,10 +9,10 @@ var operationArray = {
         click: function() {
             var operationParam = {},
             index=0,
-            callBack=function(){console.log("asfsd");
+            callBack=function(){
                 if(index==operationArray.sort.config.length-1) {
                     operationArray.sort.operation(operationParam);
-                } else {console.log("txt_"+operationArray.sort.config[index] + "_" + index);
+                } else {
                     operationParam[operationArray.sort.config[index]] = document.getElementById("txt_"+operationArray.sort.config[index] + "_" + index).value;
                     index += 1;
                     ui["create_" + operationArray.sort.config[index]](operationParam, operationArray.sort.config[index] + "_" + index);
