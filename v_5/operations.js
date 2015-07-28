@@ -19,21 +19,27 @@ var operationArray = {
         click: function() {
 
             // operations based on configuration
+            index = 0;
             var getValues = (function(value) {
-                console.log(value);
                 operationArray.sort.config[index].value = value;
-            });
-            if(operationArray.sort.config.length) {
-                index = 0;
-                var html = ui[operationArray.sort.config[index].type].getHTML(operationArray.sort.config[index].name,getValues);
-                document.getElementById('div_sort').innerHTML = html;
-                document.getElementById('btn_submit_'+operationArray.sort.config[index].name).addEventListener('click', function(event){
-                    getValues(document.getElementById("txt_"+operationArray.sort.config[index].name).value);
-                });
-            }
-            
+                index+=1;
+                if(index<operationArray.sort.config.length) {
+                    if(!operationArray.sort.config[index].options) {
+                        operationArray.sort.config[index].options = [];
+                    }
+                    var html = ui[operationArray.sort.config[index].type].getHTML(operationArray.sort.config[index].name, operationArray.sort.config[index].options);
+                    document.getElementById('div_sort').innerHTML = html;
+                    document.getElementById('btn_submit_'+operationArray.sort.config[index].name).addEventListener('click', function(event){
+                        getValues(document.getElementById("txt_"+operationArray.sort.config[index].name).value);
+                    });
+                } else {
+                    operationArray.sort.operation();
+                }
+                
+            })();
+                        
 
-            operationArray.sort.operation();
+            
         },
         operation: function(config) {
 
