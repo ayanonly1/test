@@ -75,53 +75,7 @@
         }
     }
 
-    var operationArray = {
-    "sort": {
-        click: function() {
-            operationArray.sort.operation();
-        },
-        operation: function(config) {
-            var b = new Benchmark("sort");
-            b.startTimer();
-            // do the operation here
-
-
-
-
-            b.stopTimer();
-        }
-    },
-    "search": {
-        click: function() {
-            operationArray.search.operation();
-        },
-        operation: function(config) {
-            var b = new Benchmark("search");
-            b.startTimer();
-            // do the operation here
-
-
-
-
-            b.stopTimer();
-        }
-    },
-    "serialize": {
-        click: function() {
-            operationArray.serialize.operation();
-        },
-        operation: function(config) {
-            var b = new Benchmark("serialize");
-            b.startTimer();
-            // do the operation here
-
-
-
-
-            b.stopTimer();
-        }
-    }
-};
+    
     
     </script>
 </head>
@@ -166,6 +120,8 @@
     <script type="text/javascript">
     addDataButtons();
     </script>
+    <script type="text/javascript" src="ui.js"></script>
+    <script type="text/javascript" src="operations.js"></script>
     <script type="text/javascript">
     var displayContent = (function(tabIndex) {
         var tabElements = document.getElementsByClassName('tab');
@@ -215,7 +171,7 @@
     (function() {
         var html = ""
         for(var index in operationArray) {
-            html+="<button class='btn' onclick='operationArray[\"" + index + "\"].click()'>"+index+"</button>";
+            html+="<span><button class='btn' onclick='operationArray[\"" + index + "\"].click()'>"+index+"</button><div id='div_operation'></div></span>";
         }
         document.getElementById("div_operationList").innerHTML = html;
     })();
