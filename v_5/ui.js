@@ -1,9 +1,9 @@
 var ui = {
 	text: {
-		getHTML: function(attributeName, isMandatory) {
+		getHTML: function(attributeName) {
 			var html = "<label> Enter the value for "+attributeName+"</label>";
 			html+= "<input type='text' id='txt_"+attributeName+"'>";
-			html += "<button>Submit</button>";
+			html += "<button id='btn_submit_"+attributeName+"'>Submit</button>";
 			return html;			
 		}
 	},
