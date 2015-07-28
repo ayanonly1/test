@@ -5,24 +5,26 @@
 */
 var operationArray = {
     sort: {
-        config: ['table', 'field'],
+        config: [{
+            name: "table_name",
+            type: "text",
+        }, {
+            name: "attribute_name",
+            type: "text"
+        }, {
+            name: "order",
+            type: "list",
+            options: ['asc', 'desc']
+        }],
         click: function() {
-            var operationParam = {},
-            index=0,
-            callBack=function(){
-                if(index==operationArray.sort.config.length-1) {
-                    operationArray.sort.operation(operationParam);
-                } else {
-                    operationParam[operationArray.sort.config[index]] = document.getElementById("txt_"+operationArray.sort.config[index] + "_" + index).value;
-                    index += 1;
-                    ui["create_" + operationArray.sort.config[index]](operationParam, operationArray.sort.config[index] + "_" + index);
-                }
-            };
 
-            ui["create_" + operationArray.sort.config[index]](operationParam, operationArray.sort.config[index] + "_" + index);
-
-            ui.create_button(callBack);
-            
+            // operations based on configuration
+            if(operationArray.sort.config.length) {
+                index = 0;
+                var html = ui[operationArray.sort.config[index].type].getHTML(operationArray.sort.config[index].name);
+                document.getElementById('div_sort').innerHTML = html;
+            }
+            operationArray.sort.operation();
         },
         operation: function(config) {
 
