@@ -170,3 +170,10 @@ select {
 #table_operations table {
 	width: 95%;
 }*/
+
+#div_operation {
+	
+    height: 40px;
+    padding: 5px;
+    width: 500px;
+}
