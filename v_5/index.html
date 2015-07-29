@@ -140,14 +140,17 @@
             }
         }
         var displayInfo = "";
-        displayInfo += "<table class='table table-bordered'><tr><th>Number of Data</th><th>Fields(type)</th></tr>";
-        displayInfo += "<tr><td id='dataLength_"+tabIndex+"'>"+ convertNumberToWord(dataStore[tabIndex].data.length) + "</td><td>";
-        for(var index2 in dataStore[tabIndex].fields) {
-            displayInfo += (parseInt(index2)+1)+">"+dataStore[tabIndex].fields[index2].name+"("+((dataStore[tabIndex].data[0])?typeof dataStore[tabIndex].data[0][index2]:"undefined type")+"), ";
-        }
-        displayInfo = displayInfo.substring(0, displayInfo.length - 1);
-        displayInfo += "</td></tr></table>";
-        document.getElementById("div_info").innerHTML = displayInfo;
+        mainDatabase[tabIndex].find({}, function(error, rows){
+            displayInfo += "<table class='table table-bordered'><tr><th>Number of Data</th><th>Fields(type)</th></tr>";
+            displayInfo += "<tr><td id='dataLength_"+tabIndex+"'>"+ convertNumberToWord(rows.length) + "</td><td>";
+            for(var index2 in dataStore[tabIndex].fields) {
+                displayInfo += (parseInt(index2)+1)+">"+dataStore[tabIndex].fields[index2].name+"("+((rows[0])?typeof rows[0][dataStore[tabIndex].fields[index2].name]:"undefined type")+"), ";
+            }
+            displayInfo = displayInfo.substring(0, displayInfo.length - 1);
+            displayInfo += "</td></tr></table>";
+            document.getElementById("div_info").innerHTML = displayInfo;    
+        });
+        
     });
     (function() {
         // populate the tab based on number of tabs
