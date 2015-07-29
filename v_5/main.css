@@ -177,3 +177,7 @@ select {
     padding: 5px;
     width: 500px;
 }
+
+.op_select {
+	margin:5px;
+}

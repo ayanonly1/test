@@ -9,6 +9,7 @@ var ui = {
 			option.appendChild(document.createTextNode(options[optionIndex]));
 			select.appendChild(option);
 		}
+		select.setAttribute('class', 'op_select');
 		if(document.getElementById('btn_go')) {
 			var btnElement = document.getElementById('btn_go');
 			btnElement.parentNode.insertBefore(select, btnElement);
