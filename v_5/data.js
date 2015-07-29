@@ -1,13 +1,13 @@
 var dataStore = {
         "order": {
             fields: [{
-                name: "Customer Name",
+                name: "Customer-Name",
                 dataGenerator: lib.generateName,
             }, {
-                name: "Customer Email",
+                name: "Customer-Email",
                 dataGenerator: lib.generateEmail,
             }, {
-                name: "Order Date",
+                name: "Order-Date",
                 dataGenerator: function() {
                     var date = "";
                     date += lib.generateRandomNumber(1, 30);
@@ -18,7 +18,7 @@ var dataStore = {
                     return date;
                 }
             }, {
-                name: "Order Amount",
+                name: "Order-Amount",
                 dataGenerator: lib.genRandomNoGenerator(1, 10000, 2)
             }, {
                 name: "Profit",

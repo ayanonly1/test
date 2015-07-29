@@ -38,7 +38,7 @@ var operationArray = {
         }
     },
     search: {
-        config: ['query'],
+        config: ['table','query'],
         click: function() {
             var operationParam = {},
             index=0,
@@ -57,15 +57,21 @@ var operationArray = {
 
             ui.create_button(callBack, "search");
         },
-        operation: function(config) {console.log(config);
+        operation: function(config) {
             var b = new Benchmark("search");
             b.startTimer();
+            mainDatabase[config.table].find(config.query, function(err, records){
+                b.stopTimer();
+                console.log(records.length);
+            })
+            
+
             // do the operation here
 
 
 
 
-            b.stopTimer();
+            
         }
     },
     serialize: {

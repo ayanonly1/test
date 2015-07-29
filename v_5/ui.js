@@ -45,7 +45,13 @@ var ui = {
 		input.setAttribute("type", "text");
 		input.setAttribute("id", "txt_"+id);
 		input.setAttribute("placeholder", "Enter the searchQuery");
-		document.getElementById("div_operation_" + op).appendChild(input);
+		if(document.getElementById('btn_go_' + op)) {
+			var btnElement = document.getElementById('btn_go_' + op);
+			btnElement.parentNode.insertBefore(input, btnElement);
+		} else {
+			document.getElementById("div_operation_"+op).appendChild(input);
+		}
+		
 	}
 	
 }
