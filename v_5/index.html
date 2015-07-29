@@ -35,11 +35,14 @@
             return "";
         }
     }];//"Operation name", "Start time", "End time", "Duration", "Remarks"
+    var mainDatabase = [];
     function addDataButtons() {
         var container = document.getElementById("table_add"),
             i;
         for (i in dataStore) {
             container.innerHTML += "&nbsp;&nbsp;<option value='"+i+"' class='add_table__data_botton_class'>Add to Table \"" + i + "\"</option>";
+            // creating the databses
+            mainDatabase[i] = new Nedb();
         }
     }
 
@@ -72,7 +75,9 @@
         name = sel.options[sel.selectedIndex].value;
         generateData(parseInt(document.getElementById("numrow").value, 10), dataStore[name])
         if(document.getElementById("dataLength_"+name)) {
+            mainDatabase[name].insert(dataStore[name].data);
             displayContent(name);
+            dataStore[name].data = [];
         }
     }
 

@@ -149,13 +149,13 @@ function gendata(no_entry, tableConf, callBack) {
 
 
     for (i = 0; i < no_entry; i++, dataLen++) {
-        row = [];
+        row = {};
         for (j = 0; j < columnLength; j++) {
             columConfig = fields[j];
             if (columConfig.arg) {
-                row[j] = columConfig.dataGenerator(row[fieldsIndex[columConfig.arg]])
+                row[fields[j].name] = columConfig.dataGenerator(row[fieldsIndex[columConfig.arg]])
             } else {
-                row[j] = columConfig.dataGenerator()
+                row[fields[j].name] = columConfig.dataGenerator()
             }
         }
         data[dataLen] = row;
