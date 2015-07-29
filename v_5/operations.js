@@ -15,13 +15,13 @@ var operationArray = {
                 } else {
                     operationParam[operationArray.sort.config[index]] = document.getElementById("txt_"+operationArray.sort.config[index] + "_" + index).value;
                     index += 1;
-                    ui["create_" + operationArray.sort.config[index]](operationParam, operationArray.sort.config[index] + "_" + index);
+                    ui["create_" + operationArray.sort.config[index]](operationParam, operationArray.sort.config[index] + "_" + index, "sort");
                 }
             };
 
-            ui["create_" + operationArray.sort.config[index]](operationParam, operationArray.sort.config[index] + "_" + index);
+            ui["create_" + operationArray.sort.config[index]](operationParam, operationArray.sort.config[index] + "_" + index, "sort");
 
-            ui.create_button(callBack);
+            ui.create_button(callBack, "sort");
             
         },
         operation: function(config) {
@@ -38,10 +38,26 @@ var operationArray = {
         }
     },
     search: {
+        config: ['query'],
         click: function() {
-            operationArray.search.operation();
+            var operationParam = {},
+            index=0,
+            callBack=function(){
+                if(index==operationArray.search.config.length-1) {
+                    operationParam[operationArray.search.config[index]] = document.getElementById("txt_"+operationArray.search.config[index]).value;
+                    operationArray.search.operation(operationParam);
+                } else {
+                    operationParam[operationArray.search.config[index]] = document.getElementById("txt_"+operationArray.search.config[index]).value;
+                    index += 1;
+                    ui["create_" + operationArray.search.config[index]](operationParam, operationArray.search.config[index], "search");
+                }
+            };
+
+            ui["create_" + operationArray.search.config[index]](operationParam, operationArray.search.config[index], "search");
+
+            ui.create_button(callBack, "search");
         },
-        operation: function(config) {
+        operation: function(config) {console.log(config);
             var b = new Benchmark("search");
             b.startTimer();
             // do the operation here

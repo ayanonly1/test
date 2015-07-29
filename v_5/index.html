@@ -162,14 +162,6 @@
         document.getElementsByClassName('tab')[0].click();
     })();
     
-    var initializeSort = (function() {
-
-    });
-
-    var initializeSearch = (function() {
-
-    });
-
     var performOperation = (function(operationName) {
         if(operationName=="sort") {
             initializeSort();
@@ -177,10 +169,11 @@
             initializeSearch();
         }
     });
+    
     (function() {
         var html = ""
         for(var index in operationArray) {
-            html+="<span><button class='btn' onclick='operationArray[\"" + index + "\"].click()'>"+index+"</button><div id='div_operation'></div></span>";
+            html+="<span><button class='btn' onclick='operationArray[\"" + index + "\"].click()'>"+index+"</button><div class='div_operation' id='div_operation_"+index+"'></div></span>";
         }
         document.getElementById("div_operationList").innerHTML = html;
     })();
