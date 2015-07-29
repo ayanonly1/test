@@ -29,6 +29,7 @@ var ui = {
 	create_button: function(callBack){
 		var button = document.createElement('input');
 		button.setAttribute('type', 'button');
+		button.setAttribute('value', "Go");
 		button.addEventListener('click', callBack);
 		document.getElementById("div_operation").appendChild(button);	
 	}
