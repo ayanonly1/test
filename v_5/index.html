@@ -105,6 +105,8 @@
         <div id="table_operations">
             <div class="label">Select the operation first</div>
             <div id="div_operationList"></div>
+            <div id="div_operation"></div>
+            <div id="div_operation_comment"></div>
             
         </div>
 
@@ -171,7 +173,7 @@
     (function() {
         var html = ""
         for(var index in operationArray) {
-            html+="<span><button class='btn' onclick='operationArray[\"" + index + "\"].click()'>"+index+"</button><div id='div_operation'></div></span>";
+            html+="<span><button class='btn' onclick='operationArray[\"" + index + "\"].click()'>"+index+"</button></span>";
         }
         document.getElementById("div_operationList").innerHTML = html;
     })();
