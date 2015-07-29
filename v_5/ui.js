@@ -9,7 +9,12 @@ var ui = {
 			option.appendChild(document.createTextNode(options[optionIndex]));
 			select.appendChild(option);
 		}
-		document.getElementById("div_operation").appendChild(select);
+		if(document.getElementById('btn_go')) {
+			var btnElement = document.getElementById('btn_go');
+			btnElement.parentNode.insertBefore(select, btnElement);
+		} else {
+			document.getElementById("div_operation").appendChild(select);
+		}
 	},
 	create_table: function(config, id) {
 		var options = [];
@@ -30,6 +35,7 @@ var ui = {
 		var button = document.createElement('input');
 		button.setAttribute('type', 'button');
 		button.setAttribute('value', "Go");
+		button.setAttribute('id', "btn_go");
 		button.addEventListener('click', callBack);
 		document.getElementById("div_operation").appendChild(button);	
 	}
