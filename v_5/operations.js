@@ -89,10 +89,12 @@ var operationArray = {
                 }
             };
 
+            ui.clear_ui();
+            
             ui["create_" + operationArray.search.config[index].methodName](operationParam,  operationArray.search.config[index].name + "_" + index);
 
             ui.create_button(callBack, "search");
-            //ui.clear_ui();
+            
             //operationArray.search.operation();
 
         },
