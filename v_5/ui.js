@@ -49,17 +49,17 @@ var ui = {
         while (container.firstChild) {
             container.removeChild(container.firstChild);
         }
-    }
-    create_query: function(config, id, op) {
+    }, 
+    create_query: function(config, id) {
 		var input = document.createElement("input");
 		input.setAttribute("type", "text");
 		input.setAttribute("id", "txt_"+id);
 		input.setAttribute("placeholder", "Enter the searchQuery");
-		if(document.getElementById('btn_go_' + op)) {
-			var btnElement = document.getElementById('btn_go_' + op);
+		if(document.getElementById('btn_go')) {
+			var btnElement = document.getElementById('btn_go');
 			btnElement.parentNode.insertBefore(input, btnElement);
 		} else {
-			document.getElementById("div_operation_"+op).appendChild(input);
+			document.getElementById("div_operation").appendChild(input);
 		}
 	}
 }

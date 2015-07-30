@@ -66,29 +66,37 @@ var operationArray = {
         }
     },
     search: {
-        config: ['table','query'],
+        config: [{
+            name: 'table',
+            methodName: "table",
+            displayText: "Please select the table"
+        }, {
+            name: 'query',
+            methodName: "query",
+            displayText: "Please enter the query for search"
+        }],
         click: function() {
             var operationParam = {},
             index=0,
             callBack=function(){
                 if(index==operationArray.search.config.length-1) {
-                    operationParam[operationArray.search.config[index]] = document.getElementById("txt_"+operationArray.search.config[index]).value;
+                    operationParam[operationArray.search.config[index].name] = document.getElementById("txt_"+operationArray.search.config[index].name+"_"+index).value;
                     operationArray.search.operation(operationParam);
                 } else {
-                    operationParam[operationArray.search.config[index]] = document.getElementById("txt_"+operationArray.search.config[index]).value;
+                    operationParam[operationArray.search.config[index].name] = document.getElementById("txt_"+operationArray.search.config[index].name+"_"+index).value;
                     index += 1;
-                    ui["create_" + operationArray.search.config[index]](operationParam, operationArray.search.config[index], "search");
+                    ui["create_" + operationArray.search.config[index].methodName](operationParam, operationArray.search.config[index].name+"_"+index);
                 }
             };
 
-            ui["create_" + operationArray.search.config[index]](operationParam, operationArray.search.config[index], "search");
+            ui["create_" + operationArray.search.config[index].methodName](operationParam,  operationArray.search.config[index].name + "_" + index);
 
             ui.create_button(callBack, "search");
-            ui.clear_ui();
-            operationArray.search.operation();
+            //ui.clear_ui();
+            //operationArray.search.operation();
 
         },
-        operation: function(config) {
+        operation: function(config) {console.log(config);
             var b = new Benchmark("search");
             b.startTimer();
             mainDatabase[config.table].find(config.query, function(err, records){
