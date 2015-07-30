@@ -3,7 +3,6 @@
 <head>
     <title>FusionCharts Dev Samples</title>
     <link href="main.css" type="text/css" rel="stylesheet">
-    <script type="text/javascript" src="nedb.js"></script>
     <script type="text/javascript" src="lib.js"></script>
     <script type="text/javascript" src="data.js"></script>
     <script type="text/javascript">
@@ -34,7 +33,11 @@
         manipulate: function() {
             return "";
         }
-    }];//"Operation name", "Start time", "End time", "Duration", "Remarks"
+    }];
+    window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+    if(!window.indexedDB) {
+        alert("Your Browser does not support IndexedDB");
+    }
     var mainDatabase = [];
     function addDataButtons() {
         var container = document.getElementById("table_add"),
