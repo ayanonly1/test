@@ -32,7 +32,7 @@
     }, {
         name: "Remarks",
         manipulate: function() {
-            return "";
+            return (arguments[0].remarks)?arguments[0].remarks:"Nothing";
         }
     }];//"Operation name", "Start time", "End time", "Duration", "Remarks"
     var mainDatabase = [];

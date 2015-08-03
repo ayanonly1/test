@@ -1,4 +1,5 @@
 var ui = {
+    
     create_list: function(config, id, options) {
         var select = document.createElement('select'),
             option;
@@ -17,6 +18,7 @@ var ui = {
             document.getElementById("div_operation").appendChild(select);
         }
     },
+    
     create_table: function(config, id) {
         var options = [];
         for (var index in dataStore) {
@@ -24,6 +26,7 @@ var ui = {
         }
         ui.create_list({}, id, options);
     },
+    
     create_field: function(config, id) {
         tableName = config.table || "";
         var fields = [];
@@ -32,6 +35,7 @@ var ui = {
         }
         ui.create_list({}, id, fields);
     },
+    
     create_button: function(callBack) {
         var button = document.createElement('input');
         button.setAttribute('type', 'button');
@@ -40,16 +44,19 @@ var ui = {
         button.addEventListener('click', callBack);
         document.getElementById("div_operation").appendChild(button);
     },
+    
     update_comment: function(comment) {
     	comment == typeof comment === "undefined" ? "" : comment;
     	document.getElementById("div_operation_comment").innerHTML = comment;
     },
+    
     clear_ui: function() {
         var container = document.getElementById("div_operation");
         while (container.firstChild) {
             container.removeChild(container.firstChild);
         }
     }, 
+    
     create_query: function(config, id) {
 		var input = document.createElement("input");
 		input.setAttribute("type", "text");
