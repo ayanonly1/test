@@ -100,9 +100,14 @@ var operationArray = {
         },
         operation: function(config) {console.log(config);
             var b = new Benchmark("search");
+            var returnObject = {};
+            mainDatabase[config.table].find({}, function(e, r){
+                returnObject["data-length"] = r.length;
+            });
             b.startTimer();
             mainDatabase[config.table].find(config.query, function(err, records){
-                b.stopTimer();
+                returnObject["effected-row"] = records.length;
+                b.stopTimer(returnObject);
                 console.log(records.length);
             })
             

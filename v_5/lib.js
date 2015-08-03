@@ -181,7 +181,7 @@ Benchmark.prototype = {
         }
 
     },
-    stopTimer: function(finishInfo) {
+    stopTimer: function(finishInfo) {console.log(finishInfo);
         var benchT = this;
         if (benchT._started) {
             if (!benchT._stopped) {
@@ -189,6 +189,9 @@ Benchmark.prototype = {
                 benchT.finishTime = new Date().getTime();
                 benchT.duration = benchT.finishTime - benchT.startTime;
                 benchT._stopped = true;
+                if(typeof finishInfo != "undefined") {
+                    benchT.remarks = "operation performed on  "+finishInfo["data-length"]+" rows, "+finishInfo["effected-row"]+ " rows effected";
+                }
                 setTimeout(function() {
                     var i, l = benchMarkListner.length;
                     for (i = 0; i < l; i++) {
