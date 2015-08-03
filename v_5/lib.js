@@ -181,7 +181,7 @@ Benchmark.prototype = {
         }
 
     },
-    stopTimer: function(finishInfo) {console.log(finishInfo);
+    stopTimer: function(finishInfo) {
         var benchT = this;
         if (benchT._started) {
             if (!benchT._stopped) {

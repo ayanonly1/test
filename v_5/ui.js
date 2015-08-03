@@ -57,6 +57,40 @@ var ui = {
         }
     }, 
     
+    create_attributes: function(config, id) {
+    	var attributeList = [];
+    	for(var index in dataStore[config.table].fields) {
+    		attributeList.push(dataStore[config.table].fields[index].name);
+    	}
+
+    	var inputBox = [];
+
+    	for(var index in attributeList) {
+    		var input = document.createElement("input");
+    		input.setAttribute("name", config.table+"_attributes");
+    		input.setAttribute("value", attributeList[index]);
+    		input.setAttribute("type", "radio");
+    		inputBox.push(input);
+    		var label = document.createElement("label");
+ 			label.appendChild(document.createTextNode(attributeList[index]));   		
+ 			inputBox.push(label);
+    	}
+
+    	if(document.getElementById('btn_go')) {
+			var btnElement = document.getElementById('btn_go');
+			for(var index in inputBox) {
+				btnElement.parentNode.insertBefore(inputBox[index], btnElement);
+			}
+		} else {
+			for(var index in inputBox) {
+				document.getElementById("div_operation").appendChild(inputBox[index]);
+			}
+		}
+
+
+
+    },
+
     create_query: function(config, id) {
 		var input = document.createElement("input");
 		input.setAttribute("type", "text");
