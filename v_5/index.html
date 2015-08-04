@@ -42,12 +42,12 @@
         }
     }
 
-    var convertNumberToWord = (function(number) {
+    var convertNumberToWord = (function(number) {console.log(number);
         if(number<100) {
             return number;
         }
         var word = "";
-        var tempData = number.toString();
+        var tempData = number.toString(10);
 
         if(tempData.length<9) {
             var zero = "";
@@ -55,7 +55,7 @@
                 zero += "0";
             }
             tempData = zero+tempData;
-        }
+        }console.log(tempData+"  "+number.toString().length);
         word = (((tempData[tempData.length-7]!="0")?tempData[tempData.length-7]:"")+((tempData[tempData.length-6]!="0")?tempData[tempData.length-6]:((tempData[tempData.length-7]!=0)?tempData[tempData.length-6]:""))+((tempData[tempData.length-7]!=0||tempData[tempData.length-6]!=0)?" Lakh ":""))+ ((tempData[tempData.length-5]!="0"?tempData[tempData.length-5]:"")+(tempData[tempData.length-4]!="0"?tempData[tempData.length-4]:(tempData[tempData.length-5]!="0"?tempData[tempData.length-4]:""))+((tempData[tempData.length-5]!="0"||tempData[tempData.length-4]!="0")?" Thousand ":"")) + ((tempData[tempData.length-3]!="0")?(tempData[tempData.length-3] + " Hundred "):"") +  ((tempData[tempData.length-2]!="0"?tempData[tempData.length-2]:"")+((tempData[tempData.length-1]!="0")?tempData[tempData.length-1]:((tempData[tempData.length-2]!="0")?tempData[tempData.length-1]:"")));
         var flag = 0;
         for(var index=0;index<=tempData.length-8;index++) {
@@ -69,10 +69,12 @@
     function addTableData() {
         var sel = document.getElementById("table_add");
         name = sel.options[sel.selectedIndex].value;
-        generateData(parseInt(document.getElementById("numrow").value, 10), dataStore[name])
-        if(document.getElementById("dataLength_"+name)) {
-            displayContent(name);
-        }
+        generateData(parseInt(document.getElementById("numrow").value, 10), dataStore[name], function() {
+            if(document.getElementById("dataLength_"+name)) {
+                displayContent(name);
+            }
+        });
+        
     }
 
     
@@ -126,6 +128,7 @@
     <script type="text/javascript" src="operations.js"></script>
     <script type="text/javascript">
     var displayContent = (function(tabIndex) {
+        console.log("dfgsdgsdg");
         var tabElements = document.getElementsByClassName('tab');
         for(var index=0;index<tabElements.length; index++) {
             if(typeof tabElements[index].className!="undefined" && tabElements[index].className.indexOf('active')!=-1) {
