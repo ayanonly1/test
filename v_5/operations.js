@@ -190,12 +190,9 @@ var operationArray = {
                         switch(config.suboperation) {
                             case "sort":
                                 operationArray.grouping.performSort(config, records);
-                                
                             break;
                             case "filter":
-                                var b = new Benchmark("grouping"+"_"+config.suboperation);
-                                
-
+                                operationArray.grouping.performFilter(config, records);
                             break;
                         }
                         
@@ -213,7 +210,10 @@ var operationArray = {
 
             
         },
-        performSort : function(config, records) {
+        performFilter: function(config, records) {
+            var b = new Benchmark("grouping"+"_"+config.suboperation);
+        },
+        performSort: function(config, records) {
             var sortType = (typeof config.query!="undefined"&&config.query.trim()!="")?(config.query.trim()):"bubble";
             var b = new Benchmark("grouping"+"_"+config.suboperation+"_"+sortType);
             var sortObject = new Sort();
