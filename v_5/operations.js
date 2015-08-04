@@ -208,9 +208,11 @@ var operationArray = {
                 case "sort":
                     var b = new Benchmark("grouping"+"_"+config.suboperation+"_"+sortType);
                     var sortObject = new Sort();
+                    var responseObject = {};
+                    responseObject.remarks = "operation "+config.suboperation+" performed using "+sortType+" method on"+records.length+" numbers of data";
                     b.startTimer();
-                    console.log(sortObject[sortType+"Sort"](records, config.attributes));
-                    b.stopTimer();
+                    sortObject[sortType+"Sort"](records, config.attributes);
+                    b.stopTimer(responseObject);
                 break;
             }
         }

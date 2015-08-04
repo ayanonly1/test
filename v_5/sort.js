@@ -1,9 +1,9 @@
 var Sort = (function () {
-	var merge = (function merge(left, right) {
+	var merge = (function merge(left, right, attribute) {
 	    var result = [];
 	 
 	    while (left.length && right.length) {
-	        if (left[0] <= right[0]) {
+	        if (left[0][attribute] <= right[0][attribute]) {
 	            result.push(left.shift());
 	        } else {
 	            result.push(right.shift());
@@ -18,7 +18,7 @@ var Sort = (function () {
 	 
 	    return result;
 	});
-	this.mergeSort = (function mergeSort(arr) {
+	this.mergeSort = (function mergeSort(arr, attribute) {
 	    if (arr.length < 2)
 	        return arr;
 	 
@@ -26,7 +26,7 @@ var Sort = (function () {
 	    var left   = arr.slice(0, middle);
 	    var right  = arr.slice(middle, arr.length);
 	 
-	    var res = merge(mergeSort(left), mergeSort(right));
+	    var res = merge(mergeSort(left, attribute), mergeSort(right, attribute), attribute);
 	    return res;
 	});
 	this.bubbleSort = (function bubble(sortArray, attribute) {
@@ -42,14 +42,13 @@ var Sort = (function () {
 	    }
 	    return sortArray;
 	});
-	this.insertionSort = (function insertion(inputArray) {
-	    var sortArray = inputArray.slice(0);
+	this.insertionSort = (function insertion(sortArray, attribute) {
 	    var length = sortArray.length;
-	    for (i = 1; i < length; i++) {
-	        for (j = 0; j < i; j++)
-	            if (sortArray[j] > sortArray[i]) {
-	                temp = sortArray[i];
-	                k = i;
+	    for (var i = 1; i < length; i++) {
+	        for (var j = 0; j < i; j++)
+	            if (sortArray[j][attribute] > sortArray[i][attribute]) {
+	                var temp = sortArray[i];
+	                var k = i;
 	                while (k != j) {
 	                    sortArray[k] = sortArray[k - 1];
 	                    k--;
