@@ -238,8 +238,8 @@ var operationArray = {
                             }
                         }
                     }
-                    console.log(records);
                     b.stopTimer(responseObject);
+                    console.log(records);
                 });    
             });
         },
