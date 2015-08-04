@@ -74,12 +74,14 @@
     function addTableData() {
         var sel = document.getElementById("table_add");
         name = sel.options[sel.selectedIndex].value;
-        generateData(parseInt(document.getElementById("numrow").value, 10), dataStore[name])
-        if(document.getElementById("dataLength_"+name)) {
-            mainDatabase[name].insert(dataStore[name].data);
-            displayContent(name);
-            dataStore[name].data = [];
-        }
+        generateData(parseInt(document.getElementById("numrow").value, 10), dataStore[name], function() {
+            if(document.getElementById("dataLength_"+name)) {
+                mainDatabase[name].insert(dataStore[name].data);
+                displayContent(name);
+                dataStore[name].data = [];
+            }    
+        });
+        
     }
 
     
@@ -143,7 +145,7 @@
             }
         }
         var displayInfo = "";
-        mainDatabase[tabIndex].find({}, function(error, rows){
+        mainDatabase[tabIndex].find({}, function(error, rows){alert(rows.length);
             displayInfo += "<table class='table table-bordered'><tr><th>Number of Data</th><th>Fields(type)</th></tr>";
             displayInfo += "<tr><td id='dataLength_"+tabIndex+"'>"+ convertNumberToWord(rows.length) + "</td><td>";
             for(var index2 in dataStore[tabIndex].fields) {
