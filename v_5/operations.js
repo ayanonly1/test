@@ -187,7 +187,18 @@ var operationArray = {
             mainDatabase[config.table].find({}, function(err, records) {
                 if(records.length) {
                     if(!isNaN(records[0][config.attributes])) {
-                        operationArray.grouping.performSort(config, records);
+                        switch(config.suboperation) {
+                            case "sort":
+                                operationArray.grouping.performSort(config, records);
+                                
+                            break;
+                            case "filter":
+                                var b = new Benchmark("grouping"+"_"+config.suboperation);
+                                
+
+                            break;
+                        }
+                        
                     } else {
                         alert("Only numeric sort still now");
                         return false
@@ -204,17 +215,13 @@ var operationArray = {
         },
         performSort : function(config, records) {
             var sortType = (typeof config.query!="undefined"&&config.query.trim()!="")?(config.query.trim()):"bubble";
-            switch(config.suboperation) {
-                case "sort":
-                    var b = new Benchmark("grouping"+"_"+config.suboperation+"_"+sortType);
-                    var sortObject = new Sort();
-                    var responseObject = {};
-                    responseObject.remarks = "operation "+config.suboperation+" performed using "+sortType+" method on"+records.length+" numbers of data";
-                    b.startTimer();
-                    sortObject[sortType+"Sort"](records, config.attributes);
-                    b.stopTimer(responseObject);
-                break;
-            }
+            var b = new Benchmark("grouping"+"_"+config.suboperation+"_"+sortType);
+            var sortObject = new Sort();
+            var responseObject = {};
+            responseObject.remarks = "operation "+config.suboperation+" performed using "+sortType+" method on"+records.length+" numbers of data";
+            b.startTimer();
+            sortObject[sortType+"Sort"](records, config.attributes);
+            b.stopTimer(responseObject);
         }
     }
 }
