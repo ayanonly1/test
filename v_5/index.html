@@ -145,7 +145,7 @@
             }
         }
         var displayInfo = "";
-        mainDatabase[tabIndex].find({}, function(error, rows){alert(rows.length);
+        mainDatabase[tabIndex].find({}, function(error, rows){
             displayInfo += "<table class='table table-bordered'><tr><th>Number of Data</th><th>Fields(type)</th></tr>";
             displayInfo += "<tr><td id='dataLength_"+tabIndex+"'>"+ convertNumberToWord(rows.length) + "</td><td>";
             for(var index2 in dataStore[tabIndex].fields) {

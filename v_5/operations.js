@@ -143,15 +143,15 @@ var operationArray = {
             name: 'table',
             methodName: "table",
             displayText: "Please select the table"
-        }, {
-            name: 'attributes',
-            methodName: "attributes",
-            displayText: "select one attribute to group"
         },{
             name: 'suboperation',
             methodName: "suboperation",
             displayText: "select the sub operation",
             subOperationList: ["sort", "filter", "aggregate", "highlight"]
+        }, {
+            name: 'attributes',
+            methodName: "attributes",
+            displayText: "select one attribute to group"
         }, {
             name: 'query',
             methodName: "query",
@@ -160,6 +160,7 @@ var operationArray = {
         click: function() {
             var operationParam = {},
             index=0,
+            flag=0,
             callBack=function(){
                 if(index==operationArray.grouping.config.length-1) {
                     operationParam[operationArray.grouping.config[index].name] = document.getElementById("txt_"+operationArray.grouping.config[index].name+"_"+index).value;
@@ -167,6 +168,10 @@ var operationArray = {
                 } else {
                     operationParam[operationArray.grouping.config[index].name] = document.getElementById("txt_"+operationArray.grouping.config[index].name+"_"+index).value;
                     index += 1;
+                    if(typeof operationParam["suboperation"]!="undefined" && operationParam["suboperation"]!="sort" && !flag) {
+                        index+=1;
+                        flag = 1;
+                    }
                     if(operationArray.grouping.config[index].methodName=="suboperation") {
                         ui["create_" + operationArray.grouping.config[index].methodName](operationParam, operationArray.grouping.config[index].name+"_"+index, operationArray.grouping.config[index].subOperationList);                        
                     } else {
@@ -186,20 +191,20 @@ var operationArray = {
             
             mainDatabase[config.table].find({}, function(err, records) {
                 if(records.length) {
-                    if(!isNaN(records[0][config.attributes])) {
+                    
                         switch(config.suboperation) {
                             case "sort":
-                                operationArray.grouping.performSort(config, records);
+                                if(!isNaN(records[0][config.attributes])) {
+                                    operationArray.grouping.performSort(config, records);
+                                } else {
+                                     alert("Only numeric sort still now");
+                                     return false
+                                 }
                             break;
                             case "filter":
-                                operationArray.grouping.performFilter(config, records);
+                                operationArray.grouping.performFilter(config);
                             break;
                         }
-                        
-                    } else {
-                        alert("Only numeric sort still now");
-                        return false
-                    }
                 } else {
                     alert("please enter table data to perform operation");
                     return false;
@@ -212,6 +217,7 @@ var operationArray = {
         },
         performFilter: function(config, records) {
             var b = new Benchmark("grouping"+"_"+config.suboperation);
+            console.log(config);
         },
         performSort: function(config, records) {
             var sortType = (typeof config.query!="undefined"&&config.query.trim()!="")?(config.query.trim()):"bubble";
