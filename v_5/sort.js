@@ -29,7 +29,8 @@ var Sort = (function () {
 	    var res = merge(mergeSort(left, attribute), mergeSort(right, attribute), attribute);
 	    return res;
 	});
-	this.bubbleSort = (function bubble(sortArray, attribute) {
+	this.bubbleSort = (function bubble(inputArray, attribute) {
+	    var sortArray = inputArray.slice(0);
 	    var length = sortArray.length;
 	    for (var i = 0; i < length; i++) {
 	        for (var j = 0; j < length - 1; j++) {
@@ -42,7 +43,8 @@ var Sort = (function () {
 	    }
 	    return sortArray;
 	});
-	this.insertionSort = (function insertion(sortArray, attribute) {
+	this.insertionSort = (function insertion(inputArray, attribute) {
+		var sortArray = inputArray.slice(0);
 	    var length = sortArray.length;
 	    for (var i = 1; i < length; i++) {
 	        for (var j = 0; j < i; j++)
@@ -59,10 +61,3 @@ var Sort = (function () {
 	    return sortArray;
 	});
 });
-
-//Testing Part
-// var obj = new Sorting();
-// var unsorted = [987, 765, 215, 476, 398, 10, 187, 97, 65, 876, 23, 9];
-// var sorted = obj.insertionSort(unsorted);
-// console.log(unsorted);
-// console.log(sorted);
