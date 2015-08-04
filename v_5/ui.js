@@ -108,5 +108,10 @@ var ui = {
 		} else {
 			document.getElementById("div_operation").appendChild(input);
 		}
+	},
+
+	create_suboperation: function(config, id, subOperationList) {
+		ui.create_list(config, id, subOperationList);
+		
 	}
 }

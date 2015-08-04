@@ -190,7 +190,7 @@ Benchmark.prototype = {
                 benchT.duration = benchT.finishTime - benchT.startTime;
                 benchT._stopped = true;
                 if(typeof finishInfo != "undefined") {
-                    benchT.remarks = "operation performed on  "+finishInfo["data-length"]+" rows, "+finishInfo["effected-row"]+ " rows effected";
+                    benchT.remarks = finishInfo.remarks;//"operation performed on  "+finishInfo["data-length"]+" rows, "+finishInfo["effected-row"]+ " rows effected";
                 }
                 setTimeout(function() {
                     var i, l = benchMarkListner.length;

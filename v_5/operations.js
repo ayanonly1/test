@@ -95,10 +95,10 @@ var operationArray = {
 
             ui.create_button(callBack, "search");
             
-            //operationArray.search.operation();
+            
 
         },
-        operation: function(config) {console.log(config);
+        operation: function(config) {
             var b = new Benchmark("search");
             var returnObject = {};
             mainDatabase[config.table].find({}, function(e, r){
@@ -107,6 +107,7 @@ var operationArray = {
             b.startTimer();
             mainDatabase[config.table].find(config.query, function(err, records){
                 returnObject["effected-row"] = records.length;
+                returnObject["remarks"] = "operation performed on  "+returnObject["data-length"]+" rows, "+returnObject["effected-row"]+ " rows effected";
                 b.stopTimer(returnObject);
                 console.log(records.length);
             })
@@ -146,6 +147,11 @@ var operationArray = {
             name: 'attributes',
             methodName: "attributes",
             displayText: "select one attribute to group"
+        },{
+            name: 'suboperation',
+            methodName: "suboperation",
+            displayText: "select one attribute to group",
+            subOperationList: ["sort", "filter", "aggregate", "highlight"]
         }],
         click: function() {
             var operationParam = {},
@@ -157,7 +163,11 @@ var operationArray = {
                 } else {
                     operationParam[operationArray.grouping.config[index].name] = document.getElementById("txt_"+operationArray.grouping.config[index].name+"_"+index).value;
                     index += 1;
-                    ui["create_" + operationArray.grouping.config[index].methodName](operationParam, operationArray.grouping.config[index].name+"_"+index);
+                    if(operationArray.grouping.config[index].methodName=="suboperation") {
+                        ui["create_" + operationArray.grouping.config[index].methodName](operationParam, operationArray.grouping.config[index].name+"_"+index, operationArray.grouping.config[index].subOperationList);                        
+                    } else {
+                        ui["create_" + operationArray.grouping.config[index].methodName](operationParam, operationArray.grouping.config[index].name+"_"+index);
+                    }
                 }
             };
             ui.clear_ui();
@@ -165,18 +175,12 @@ var operationArray = {
             ui["create_" + operationArray.grouping.config[index].methodName](operationParam,  operationArray.grouping.config[index].name + "_" + index);
 
             ui.create_button(callBack, "grouping");
-            
-            //operationArray.search.operation();
-            // clear the ui
-            //ui.clear_ui();
-            //operationArray.grouping.operation();
         },
         operation: function(config) {console.log(config);
             var b = new Benchmark("grouping");
+            var returnObject = {};
             b.startTimer();
             // do the operation here
-
-
 
 
             b.stopTimer();
