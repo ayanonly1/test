@@ -202,7 +202,7 @@ var operationArray = {
                                  }
                             break;
                             case "filter":
-                                operationArray.grouping.performFilter(config);
+                                operationArray.grouping.performFilter(config, records.length);
                             break;
                         }
                 } else {
@@ -215,9 +215,18 @@ var operationArray = {
 
             
         },
-        performFilter: function(config, records) {
+        performFilter: function(config, dataLength) {
             var b = new Benchmark("grouping"+"_"+config.suboperation);
-            console.log(config);
+            if(config.query.trim() == "") {
+                config.query = {};
+            }
+            var responseObject = {};
+            responseObject.remarks = "Filterring operation performed on "+dataLength+" numbers of data";
+            b.startTimer();
+            mainDatabase[config.table].find(config.query, function(err, records) {
+                responseObject.remarks += " Number of effected rows "+(dataLength-records.length);
+                b.stopTimer(responseObject);
+            });
         },
         performSort: function(config, records) {
             var sortType = (typeof config.query!="undefined"&&config.query.trim()!="")?(config.query.trim()):"bubble";
