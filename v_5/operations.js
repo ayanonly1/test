@@ -150,8 +150,12 @@ var operationArray = {
         },{
             name: 'suboperation',
             methodName: "suboperation",
-            displayText: "select one attribute to group",
+            displayText: "select the sub operation",
             subOperationList: ["sort", "filter", "aggregate", "highlight"]
+        }, {
+            name: 'query',
+            methodName: "query",
+            displayText: "Please enter the query for search"
         }],
         click: function() {
             var operationParam = {},
