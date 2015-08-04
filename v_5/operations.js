@@ -207,6 +207,9 @@ var operationArray = {
                             case "highlight":
                                 operationArray.grouping.performHighlight(config);
                             break;
+                            case "aggregate":
+                                operationArray.grouping.performAggregate(config, records.length);
+                            break;
                         }
                 } else {
                     alert("please enter table data to perform operation");
@@ -217,6 +220,19 @@ var operationArray = {
             
 
             
+        },
+        performAggregate: function(config, dataLength) {
+            var b = new Benchmark("grouping"+"_"+config.suboperation);
+            if(config.query.trim() == "") {
+                config.query = {};
+            }
+            var responseObject = {};
+            responseObject.remarks = "Aggregate operation performed on "+dataLength+" numbers of data";
+            b.startTimer();
+            mainDatabase[config.table].find(config.query, function(err, records) {
+                responseObject.remarks += " Number of effected rows "+(dataLength-records.length);
+                b.stopTimer(responseObject);
+            });
         },
         performHighlight: function(config) {
             var b = new Benchmark("grouping"+"_"+config.suboperation);
