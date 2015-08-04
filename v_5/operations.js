@@ -121,23 +121,23 @@ var operationArray = {
             
         }
     },
-    serialize: {
-        click: function() {
-            // clear the ui
-            ui.clear_ui();
-            operationArray.serialize.operation();
-        },
-        operation: function(config) {
-            var b = new Benchmark("serialize");
-            b.startTimer();
-            // do the operation here
+    // serialize: {
+    //     click: function() {
+    //         // clear the ui
+    //         ui.clear_ui();
+    //         operationArray.serialize.operation();
+    //     },
+    //     operation: function(config) {
+    //         var b = new Benchmark("serialize");
+    //         b.startTimer();
+    //         // do the operation here
 
 
 
 
-            b.stopTimer();
-        }
-    },
+    //         b.stopTimer();
+    //     }
+    // },
     grouping: {
         config: [{
             name: 'table',
@@ -180,14 +180,39 @@ var operationArray = {
 
             ui.create_button(callBack, "grouping");
         },
-        operation: function(config) {console.log(config);
-            var b = new Benchmark("grouping");
+        operation: function(config) {
+            
             var returnObject = {};
-            b.startTimer();
+            
+            mainDatabase[config.table].find({}, function(err, records) {
+                if(records.length) {
+                    if(!isNaN(records[0][config.attributes])) {
+                        operationArray.grouping.performSort(config, records);
+                    } else {
+                        alert("Only numeric sort still now");
+                        return false
+                    }
+                } else {
+                    alert("please enter table data to perform operation");
+                    return false;
+                }
+            });
             // do the operation here
+            
 
-
-            b.stopTimer();
+            
+        },
+        performSort : function(config, records) {
+            var sortType = (typeof config.query!="undefined"&&config.query.trim()!="")?(config.query.trim()):"bubble";
+            switch(config.suboperation) {
+                case "sort":
+                    var b = new Benchmark("grouping"+"_"+config.suboperation+"_"+sortType);
+                    var sortObject = new Sort();
+                    b.startTimer();
+                    console.log(sortObject[sortType+"Sort"](records, config.attributes));
+                    b.stopTimer();
+                break;
+            }
         }
     }
 }

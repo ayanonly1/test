@@ -112,6 +112,6 @@ var ui = {
 
 	create_suboperation: function(config, id, subOperationList) {
 		ui.create_list(config, id, subOperationList);
-		
+
 	}
 }
