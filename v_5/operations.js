@@ -109,7 +109,7 @@ var operationArray = {
                 returnObject["effected-row"] = records.length;
                 returnObject["remarks"] = "operation performed on  "+returnObject["data-length"]+" rows, "+returnObject["effected-row"]+ " rows effected";
                 b.stopTimer(returnObject);
-                console.log(records.length);
+                
             })
             
 
