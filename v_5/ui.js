@@ -70,12 +70,17 @@ var ui = {
     		input.setAttribute("name", config.table+"_attributes");
     		input.setAttribute("value", attributeList[index]);
     		input.setAttribute("type", "radio");
+    		input.setAttribute("onclick","document.getElementById('txt_"+id+"').value=this.value")
     		inputBox.push(input);
     		var label = document.createElement("label");
- 			label.appendChild(document.createTextNode(attributeList[index]));   		
+ 			label.appendChild(document.createTextNode(attributeList[index]+" "));   		
  			inputBox.push(label);
     	}
-
+    	var inputHidden = document.createElement("input");
+    	inputHidden.setAttribute("type", "hidden");
+    	inputHidden.setAttribute("id", "txt_"+id);
+    	inputHidden.setAttribute("value", "");
+    	inputBox.push(inputHidden);
     	if(document.getElementById('btn_go')) {
 			var btnElement = document.getElementById('btn_go');
 			for(var index in inputBox) {

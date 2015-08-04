@@ -152,17 +152,17 @@ var operationArray = {
             index=0,
             callBack=function(){
                 if(index==operationArray.grouping.config.length-1) {
-                    operationParam[operationArray.grouping.config[index].name] = document.getElementById("txt_"+operationArray.search.config[index].name+"_"+index).value;
+                    operationParam[operationArray.grouping.config[index].name] = document.getElementById("txt_"+operationArray.grouping.config[index].name+"_"+index).value;
                     operationArray.grouping.operation(operationParam);
                 } else {
-                    operationParam[operationArray.grouping.config[index].name] = document.getElementById("txt_"+operationArray.search.config[index].name+"_"+index).value;
+                    operationParam[operationArray.grouping.config[index].name] = document.getElementById("txt_"+operationArray.grouping.config[index].name+"_"+index).value;
                     index += 1;
-                    ui["create_" + operationArray.grouping.config[index].methodName](operationParam, operationArray.search.config[index].name+"_"+index);
+                    ui["create_" + operationArray.grouping.config[index].methodName](operationParam, operationArray.grouping.config[index].name+"_"+index);
                 }
             };
             ui.clear_ui();
             
-            ui["create_" + operationArray.grouping.config[index].methodName](operationParam,  operationArray.search.config[index].name + "_" + index);
+            ui["create_" + operationArray.grouping.config[index].methodName](operationParam,  operationArray.grouping.config[index].name + "_" + index);
 
             ui.create_button(callBack, "grouping");
             
@@ -171,7 +171,7 @@ var operationArray = {
             //ui.clear_ui();
             //operationArray.grouping.operation();
         },
-        operation: function(config) {
+        operation: function(config) {console.log(config);
             var b = new Benchmark("grouping");
             b.startTimer();
             // do the operation here
