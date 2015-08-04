@@ -4,7 +4,6 @@
     <title>FusionCharts Dev Samples</title>
     <link href="main.css" type="text/css" rel="stylesheet">
     <script type="text/javascript" src="sort.js"></script>
-    <script type="text/javascript" src="nedb.js"></script>
     <script type="text/javascript" src="lib.js"></script>
     <script type="text/javascript" src="data.js"></script>
     <script type="text/javascript">
@@ -36,14 +35,11 @@
             return (arguments[0].remarks)?arguments[0].remarks:"Nothing";
         }
     }];//"Operation name", "Start time", "End time", "Duration", "Remarks"
-    var mainDatabase = [];
     function addDataButtons() {
         var container = document.getElementById("table_add"),
             i;
         for (i in dataStore) {
             container.innerHTML += "&nbsp;&nbsp;<option value='"+i+"' class='add_table__data_botton_class'>Add to Table \"" + i + "\"</option>";
-            // creating the databses
-            mainDatabase[i] = new Nedb();
         }
     }
 
@@ -76,9 +72,7 @@
         name = sel.options[sel.selectedIndex].value;
         generateData(parseInt(document.getElementById("numrow").value, 10), dataStore[name], function() {
             if(document.getElementById("dataLength_"+name)) {
-                mainDatabase[name].insert(dataStore[name].data);
                 displayContent(name);
-                dataStore[name].data = [];
             }    
         });
         
@@ -145,16 +139,16 @@
             }
         }
         var displayInfo = "";
-        mainDatabase[tabIndex].find({}, function(error, rows){
-            displayInfo += "<table class='table table-bordered'><tr><th>Number of Data</th><th>Fields(type)</th></tr>";
-            displayInfo += "<tr><td id='dataLength_"+tabIndex+"'>"+ convertNumberToWord(rows.length) + "</td><td>";
-            for(var index2 in dataStore[tabIndex].fields) {
-                displayInfo += (parseInt(index2)+1)+">"+dataStore[tabIndex].fields[index2].name+"("+((rows[0])?typeof rows[0][dataStore[tabIndex].fields[index2].name]:"undefined type")+"), ";
-            }
-            displayInfo = displayInfo.substring(0, displayInfo.length - 1);
-            displayInfo += "</td></tr></table>";
-            document.getElementById("div_info").innerHTML = displayInfo;    
-        });
+        var rows = dataStore[tabIndex].data;
+        displayInfo += "<table class='table table-bordered'><tr><th>Number of Data</th><th>Fields(type)</th></tr>";
+        displayInfo += "<tr><td id='dataLength_"+tabIndex+"'>"+ convertNumberToWord(rows.length) + "</td><td>";
+        for(var index2 in dataStore[tabIndex].fields) {
+            displayInfo += (parseInt(index2)+1)+">"+dataStore[tabIndex].fields[index2].name+"("+((rows[0])?typeof rows[0][dataStore[tabIndex].fields[index2].name]:"undefined type")+"), ";
+        }
+        displayInfo = displayInfo.substring(0, displayInfo.length - 1);
+        displayInfo += "</td></tr></table>";
+        document.getElementById("div_info").innerHTML = displayInfo;    
+        
         
     });
     (function() {

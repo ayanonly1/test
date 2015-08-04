@@ -53,18 +53,14 @@ var operationArray = {
 
         },
         operation: function(config) {
-
-
+            console.log(config);
             var b = new Benchmark("sort");
             b.startTimer();
             // do the operation here
-
-
-
-
             b.stopTimer();
         }
     },
+    
     search: {
         config: [{
             name: 'table',
@@ -77,73 +73,36 @@ var operationArray = {
         }],
         click: function() {
             var operationParam = {},
-            index=0,
-            callBack=function(){
-                if(index==operationArray.search.config.length-1) {
-                    operationParam[operationArray.search.config[index].name] = document.getElementById("txt_"+operationArray.search.config[index].name+"_"+index).value;
-                    operationArray.search.operation(operationParam);
-                } else {
-                    operationParam[operationArray.search.config[index].name] = document.getElementById("txt_"+operationArray.search.config[index].name+"_"+index).value;
-                    index += 1;
-                    ui["create_" + operationArray.search.config[index].methodName](operationParam, operationArray.search.config[index].name+"_"+index);
-                }
-            };
-
+                index = 0,
+                callBack = function() {
+                    if (index == operationArray.search.config.length - 1) {
+                        operationParam[operationArray.search.config[index].name] = document.getElementById("txt_" + operationArray.search.config[index].name + "_" + index).value;
+                        operationArray.search.operation(operationParam);
+                    } else {
+                        operationParam[operationArray.search.config[index].name] = document.getElementById("txt_" + operationArray.search.config[index].name + "_" + index).value;
+                        index += 1;
+                        ui["create_" + operationArray.search.config[index].methodName](operationParam, operationArray.search.config[index].name + "_" + index);
+                    }
+                };
             ui.clear_ui();
-            
-            ui["create_" + operationArray.search.config[index].methodName](operationParam,  operationArray.search.config[index].name + "_" + index);
-
+            ui["create_" + operationArray.search.config[index].methodName](operationParam, operationArray.search.config[index].name + "_" + index);
             ui.create_button(callBack, "search");
-            
-            
-
         },
-        operation: function(config) {
+        operation: function(config) {console.log(config);
             var b = new Benchmark("search");
-            var returnObject = {};
-            mainDatabase[config.table].find({}, function(e, r){
-                returnObject["data-length"] = r.length;
-            });
             b.startTimer();
-            mainDatabase[config.table].find(config.query, function(err, records){
-                returnObject["effected-row"] = records.length;
-                returnObject["remarks"] = "operation performed on  "+returnObject["data-length"]+" rows, "+returnObject["effected-row"]+ " rows effected";
-                b.stopTimer(returnObject);
-                
-            })
-            
-
+            b.stopTimer();
             // do the operation here
 
-
-
-
-            
         }
     },
-    // serialize: {
-    //     click: function() {
-    //         // clear the ui
-    //         ui.clear_ui();
-    //         operationArray.serialize.operation();
-    //     },
-    //     operation: function(config) {
-    //         var b = new Benchmark("serialize");
-    //         b.startTimer();
-    //         // do the operation here
-
-
-
-
-    //         b.stopTimer();
-    //     }
-    // },
+    
     grouping: {
         config: [{
             name: 'table',
             methodName: "table",
             displayText: "Please select the table"
-        },{
+        }, {
             name: 'suboperation',
             methodName: "suboperation",
             displayText: "select the sub operation",
@@ -159,128 +118,36 @@ var operationArray = {
         }],
         click: function() {
             var operationParam = {},
-            index=0,
-            flag=0,
-            callBack=function(){
-                if(index==operationArray.grouping.config.length-1) {
-                    operationParam[operationArray.grouping.config[index].name] = document.getElementById("txt_"+operationArray.grouping.config[index].name+"_"+index).value;
-                    operationArray.grouping.operation(operationParam);
-                } else {
-                    operationParam[operationArray.grouping.config[index].name] = document.getElementById("txt_"+operationArray.grouping.config[index].name+"_"+index).value;
-                    index += 1;
-                    if(typeof operationParam["suboperation"]!="undefined" && operationParam["suboperation"]!="sort" && !flag) {
-                        index+=1;
-                        flag = 1;
-                    }
-                    if(operationArray.grouping.config[index].methodName=="suboperation") {
-                        ui["create_" + operationArray.grouping.config[index].methodName](operationParam, operationArray.grouping.config[index].name+"_"+index, operationArray.grouping.config[index].subOperationList);                        
+                index = 0,
+                flag = 0,
+                callBack = function() {
+                    if (index == operationArray.grouping.config.length - 1) {
+                        operationParam[operationArray.grouping.config[index].name] = document.getElementById("txt_" + operationArray.grouping.config[index].name + "_" + index).value;
+                        operationArray.grouping.operation(operationParam);
                     } else {
-                        ui["create_" + operationArray.grouping.config[index].methodName](operationParam, operationArray.grouping.config[index].name+"_"+index);
+                        operationParam[operationArray.grouping.config[index].name] = document.getElementById("txt_" + operationArray.grouping.config[index].name + "_" + index).value;
+                        index += 1;
+                        if (typeof operationParam["suboperation"] != "undefined" && operationParam["suboperation"] != "sort" && !flag) {
+                            index += 1;
+                            flag = 1;
+                        }
+                        if (operationArray.grouping.config[index].methodName == "suboperation") {
+                            ui["create_" + operationArray.grouping.config[index].methodName](operationParam, operationArray.grouping.config[index].name + "_" + index, operationArray.grouping.config[index].subOperationList);
+                        } else {
+                            ui["create_" + operationArray.grouping.config[index].methodName](operationParam, operationArray.grouping.config[index].name + "_" + index);
+                        }
                     }
-                }
-            };
+                };
             ui.clear_ui();
-            
-            ui["create_" + operationArray.grouping.config[index].methodName](operationParam,  operationArray.grouping.config[index].name + "_" + index);
+
+            ui["create_" + operationArray.grouping.config[index].methodName](operationParam, operationArray.grouping.config[index].name + "_" + index);
 
             ui.create_button(callBack, "grouping");
         },
-        operation: function(config) {
-            
+        operation: function(config) {console.log(config);
             var returnObject = {};
-            
-            mainDatabase[config.table].find({}, function(err, records) {
-                if(records.length) {
-                    
-                        switch(config.suboperation) {
-                            case "sort":
-                                if(!isNaN(records[0][config.attributes])) {
-                                    operationArray.grouping.performSort(config, records);
-                                } else {
-                                     alert("Only numeric sort still now");
-                                     return false
-                                 }
-                            break;
-                            case "filter":
-                                operationArray.grouping.performFilter(config, records.length);
-                            break;
-                            case "highlight":
-                                operationArray.grouping.performHighlight(config);
-                            break;
-                            case "aggregate":
-                                operationArray.grouping.performAggregate(config, records.length);
-                            break;
-                        }
-                } else {
-                    alert("please enter table data to perform operation");
-                    return false;
-                }
-            });
             // do the operation here
-            
-
-            
         },
-        performAggregate: function(config, dataLength) {
-            var b = new Benchmark("grouping"+"_"+config.suboperation);
-            if(config.query.trim() == "") {
-                config.query = {};
-            }
-            var responseObject = {};
-            responseObject.remarks = "Aggregate operation performed on "+dataLength+" numbers of data";
-            b.startTimer();
-            mainDatabase[config.table].find(config.query, function(err, records) {
-                responseObject.remarks += " Number of effected rows "+(dataLength-records.length);
-                b.stopTimer(responseObject);
-            });
-        },
-        performHighlight: function(config) {
-            var b = new Benchmark("grouping"+"_"+config.suboperation);
-            if(config.query.trim() == "") {
-                config.query = {};
-            }
-            var responseObject = {};
-            
-            b.startTimer();
-            mainDatabase[config.table].find({}, function(err, records){
-                responseObject.remarks = "Highlight operation performed on "+records.length+" numbers of data";
-                mainDatabase[config.table].find(config.query, function(err, filterredRecords) {
-                    responseObject.remarks += " Number of effected rows "+(filterredRecords.length);
-                    for(var index in filterredRecords) {
-                        var email = filterredRecords[index]["Customer-Email"];
-                        for(var mainDataIndex=0; mainDataIndex<records.length; mainDataIndex++) {
-                            if(records[mainDataIndex]["Customer-Email"]==email) {
-                                records[mainDataIndex]["highlight"] = true;
-                            }
-                        }
-                    }
-                    b.stopTimer(responseObject);
-                    console.log(records);
-                });    
-            });
-        },
-        performFilter: function(config, dataLength) {
-            var b = new Benchmark("grouping"+"_"+config.suboperation);
-            if(config.query.trim() == "") {
-                config.query = {};
-            }
-            var responseObject = {};
-            responseObject.remarks = "Filterring operation performed on "+dataLength+" numbers of data";
-            b.startTimer();
-            mainDatabase[config.table].find(config.query, function(err, records) {
-                responseObject.remarks += " Number of effected rows "+(dataLength-records.length);
-                b.stopTimer(responseObject);
-            });
-        },
-        performSort: function(config, records) {
-            var sortType = (typeof config.query!="undefined"&&config.query.trim()!="")?(config.query.trim()):"bubble";
-            var b = new Benchmark("grouping"+"_"+config.suboperation+"_"+sortType);
-            var sortObject = new Sort();
-            var responseObject = {};
-            responseObject.remarks = "operation "+config.suboperation+" performed using "+sortType+" method on"+records.length+" numbers of data";
-            b.startTimer();
-            sortObject[sortType+"Sort"](records, config.attributes);
-            b.stopTimer(responseObject);
-        }
+    
     }
 }
