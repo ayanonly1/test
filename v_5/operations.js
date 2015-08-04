@@ -204,6 +204,9 @@ var operationArray = {
                             case "filter":
                                 operationArray.grouping.performFilter(config, records.length);
                             break;
+                            case "highlight":
+                                operationArray.grouping.performHighlight(config);
+                            break;
                         }
                 } else {
                     alert("please enter table data to perform operation");
@@ -214,6 +217,31 @@ var operationArray = {
             
 
             
+        },
+        performHighlight: function(config) {
+            var b = new Benchmark("grouping"+"_"+config.suboperation);
+            if(config.query.trim() == "") {
+                config.query = {};
+            }
+            var responseObject = {};
+            
+            b.startTimer();
+            mainDatabase[config.table].find({}, function(err, records){
+                responseObject.remarks = "Highlight operation performed on "+records.length+" numbers of data";
+                mainDatabase[config.table].find(config.query, function(err, filterredRecords) {
+                    responseObject.remarks += " Number of effected rows "+(filterredRecords.length);
+                    for(var index in filterredRecords) {
+                        var email = filterredRecords[index]["Customer-Email"];
+                        for(var mainDataIndex=0; mainDataIndex<records.length; mainDataIndex++) {
+                            if(records[mainDataIndex]["Customer-Email"]==email) {
+                                records[mainDataIndex]["highlight"] = true;
+                            }
+                        }
+                    }
+                    console.log(records);
+                    b.stopTimer(responseObject);
+                });    
+            });
         },
         performFilter: function(config, dataLength) {
             var b = new Benchmark("grouping"+"_"+config.suboperation);
