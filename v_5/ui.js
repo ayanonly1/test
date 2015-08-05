@@ -101,7 +101,6 @@ var ui = {
 		input.setAttribute("type", "text");
 		input.setAttribute("id", "txt_"+id);
 		input.setAttribute("style", "width:305px");
-		input.setAttribute("placeholder", "Enter the searchQuery like { Customer-Name: a/ }");
 		if(document.getElementById('btn_go')) {
 			var btnElement = document.getElementById('btn_go');
 			btnElement.parentNode.insertBefore(input, btnElement);

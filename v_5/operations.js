@@ -73,7 +73,7 @@ var operationArray = {
         }, {
             name: 'query',
             methodName: "query",
-            displayText: "Please enter the query for search"
+            displayText: "Please enter the query for search like '{ Customer-Name: a/ }'"
         }],
         click: function() {
             var operationParam = {},
@@ -85,59 +85,40 @@ var operationArray = {
                 } else {
                     operationParam[operationArray.search.config[index].name] = document.getElementById("txt_"+operationArray.search.config[index].name+"_"+index).value;
                     index += 1;
+                    ui.update_comment(operationArray.search.config[index].displayText);
                     ui["create_" + operationArray.search.config[index].methodName](operationParam, operationArray.search.config[index].name+"_"+index);
                 }
             };
 
             ui.clear_ui();
-            
+            ui.update_comment(operationArray.grouping.config[0].displayText);
             ui["create_" + operationArray.search.config[index].methodName](operationParam,  operationArray.search.config[index].name + "_" + index);
-
             ui.create_button(callBack, "search");
-            
-            
-
         },
         operation: function(config) {
             var b = new Benchmark("search");
             var returnObject = {};
             mainDatabase[config.table].find({}, function(e, r){
                 returnObject["data-length"] = r.length;
+                if(!r.length) {
+                    alert("Please insert some data to perform search");
+                    return false;
+                } else {
+                    b.startTimer();
+                    if(config.query.trim == "") {
+                        config.query = {};
+                    }
+                    mainDatabase[config.table].find(config.query, function(err, records){
+                        returnObject["effected-row"] = records.length;
+                        returnObject["remarks"] = "operation performed on  "+returnObject["data-length"]+" rows, "+returnObject["effected-row"]+ " rows effected";
+                        b.stopTimer(returnObject);
+                    });
+                }
             });
-            b.startTimer();
-            mainDatabase[config.table].find(config.query, function(err, records){
-                returnObject["effected-row"] = records.length;
-                returnObject["remarks"] = "operation performed on  "+returnObject["data-length"]+" rows, "+returnObject["effected-row"]+ " rows effected";
-                b.stopTimer(returnObject);
-                
-            })
-            
-
-            // do the operation here
-
-
-
-
             
         }
     },
-    // serialize: {
-    //     click: function() {
-    //         // clear the ui
-    //         ui.clear_ui();
-    //         operationArray.serialize.operation();
-    //     },
-    //     operation: function(config) {
-    //         var b = new Benchmark("serialize");
-    //         b.startTimer();
-    //         // do the operation here
 
-
-
-
-    //         b.stopTimer();
-    //     }
-    // },
     grouping: {
         config: [{
             name: 'table',
@@ -155,7 +136,7 @@ var operationArray = {
         }, {
             name: 'query',
             methodName: "query",
-            displayText: "Please enter the query for search"
+            displayText: "Please enter the query for sort specify 'bubble'/'merge'/'insertion' for search '{ Customer-Name: a/ }'"
         }],
         click: function() {
             var operationParam = {},
@@ -172,6 +153,7 @@ var operationArray = {
                         index+=1;
                         flag = 1;
                     }
+                    ui.update_comment(operationArray.grouping.config[index].displayText);
                     if(operationArray.grouping.config[index].methodName=="suboperation") {
                         ui["create_" + operationArray.grouping.config[index].methodName](operationParam, operationArray.grouping.config[index].name+"_"+index, operationArray.grouping.config[index].subOperationList);                        
                     } else {
@@ -180,7 +162,7 @@ var operationArray = {
                 }
             };
             ui.clear_ui();
-            
+            ui.update_comment(operationArray.grouping.config[0].displayText);
             ui["create_" + operationArray.grouping.config[index].methodName](operationParam,  operationArray.grouping.config[index].name + "_" + index);
 
             ui.create_button(callBack, "grouping");
@@ -194,7 +176,7 @@ var operationArray = {
                     
                         switch(config.suboperation) {
                             case "sort":
-                                if(!isNaN(records[0][config.attributes])) {
+                                if(!isNaN(parseFloat(records[0][config.attributes]))) {
                                     operationArray.grouping.performSort(config, records);
                                 } else {
                                      alert("Only numeric sort still now");
