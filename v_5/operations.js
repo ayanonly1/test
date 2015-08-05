@@ -81,10 +81,12 @@ var operationArray = {
                     } else {
                         operationParam[operationArray.search.config[index].name] = document.getElementById("txt_" + operationArray.search.config[index].name + "_" + index).value;
                         index += 1;
+                        ui.update_comment(operationArray.search.config[index].displayText);
                         ui["create_" + operationArray.search.config[index].methodName](operationParam, operationArray.search.config[index].name + "_" + index);
                     }
                 };
             ui.clear_ui();
+            ui.update_comment(operationArray.search.config[0].displayText);
             ui["create_" + operationArray.search.config[index].methodName](operationParam, operationArray.search.config[index].name + "_" + index);
             ui.create_button(callBack, "search");
         },
@@ -131,6 +133,7 @@ var operationArray = {
                             index += 1;
                             flag = 1;
                         }
+                        ui.update_comment(operationArray.grouping.config[index].displayText);
                         if (operationArray.grouping.config[index].methodName == "suboperation") {
                             ui["create_" + operationArray.grouping.config[index].methodName](operationParam, operationArray.grouping.config[index].name + "_" + index, operationArray.grouping.config[index].subOperationList);
                         } else {
@@ -139,7 +142,7 @@ var operationArray = {
                     }
                 };
             ui.clear_ui();
-
+            ui.update_comment(operationArray.grouping.config[0].displayText);
             ui["create_" + operationArray.grouping.config[index].methodName](operationParam, operationArray.grouping.config[index].name + "_" + index);
 
             ui.create_button(callBack, "grouping");
