@@ -13,11 +13,6 @@ var operationArray = {
             name: 'field',
             methodName: "field",
             displayText: "Please select the Field of the table"
-        }, {
-            name: "order",
-            methodName: "list",
-            displayText: "Please select the order",
-            value: ["DESC", "ASC"]
         }],
         click: function() {
             var operationParam = {},
@@ -56,13 +51,23 @@ var operationArray = {
 
 
             var b = new Benchmark("sort");
-            b.startTimer();
+            
             // do the operation here
-
-
-
-
-            b.stopTimer();
+            var attribute = config['field'];
+            config.attributes = attribute;
+            mainDatabase[config.table].find({}, function(error, records){
+                if(!records.length) {
+                    alert("Please insert data to sort");
+                } else {
+                    if(isNaN(parseFloat(records[0][config.attributes]))) {
+                       alert("Only numeric sort still now");
+                       return false
+                    }
+                    operationArray.grouping.performSort(config, records);
+                }
+                
+            });
+            
         }
     },
     search: {
@@ -256,10 +261,10 @@ var operationArray = {
         },
         performSort: function(config, records) {
             var sortType = (typeof config.query!="undefined"&&config.query.trim()!="")?(config.query.trim()):"bubble";
-            var b = new Benchmark("grouping"+"_"+config.suboperation+"_"+sortType);
+            var b = new Benchmark("grouping"+"_"+((typeof config.suboperation!="undefined")?config.suboperation:"sort")+"_"+sortType);
             var sortObject = new Sort();
             var responseObject = {};
-            responseObject.remarks = "operation "+config.suboperation+" performed using "+sortType+" method on"+records.length+" numbers of data";
+            responseObject.remarks = "operation "+((typeof config.suboperation!="undefined")?config.suboperation:"sort")+" performed using "+sortType+" method on"+records.length+" numbers of data";
             b.startTimer();
             sortObject[sortType+"Sort"](records, config.attributes);
             b.stopTimer(responseObject);
