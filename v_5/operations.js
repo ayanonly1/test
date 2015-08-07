@@ -4,62 +4,74 @@
  * config: this attribute holds the priority wise dependency list for the operation
  */
 var operationArray = {
-    sort: {
-        config: [{
-            name: 'table',
-            methodName: "table",
-            displayText: "Please select the table"
-        }, {
-            name: 'field',
-            methodName: "field",
-            displayText: "Please select the Field of the table"
-        }, {
-            name: "order",
-            methodName: "list",
-            displayText: "Please select the order",
-            value: ["DESC", "ASC"]
-        }],
-        click: function() {
-            var operationParam = {},
-                index = 0,
-                thisOp = operationArray.sort,
-                localConfig = thisOp.config,
-                config_i = localConfig[index]
-            callBack = function() {
-                if (index < localConfig.length) {
-                    operationParam[config_i.name] = document.getElementById("txt_" + config_i.name + "_" + index).value;
-                    index += 1;
-                    config_i = localConfig[index];
-                    if (index == localConfig.length) {
-                        operationArray.sort.operation(operationParam);
-                    } else {
-                        // put the comment
-                        ui.update_comment(config_i.displayText);
-                        // create the input
-                        ui["create_" + config_i.methodName](operationParam, config_i.name + "_" + index, config_i.value);
-                    }
-                } else {
-                    operationArray.sort.operation(operationParam);
-                }
-            };
-            // clear the ui
-            ui.clear_ui();
-            // put the comment
-            ui.update_comment(config_i.displayText);
-            // create the first input
-            ui["create_" + config_i.methodName](operationParam, config_i.name + "_" + index, config_i.value);
-            // create the button
-            ui.create_button(callBack);
+    // sort: {
+    //     config: [{
+    //         name: 'table',
+    //         methodName: "table",
+    //         displayText: "Please select the table"
+    //     }, {
+    //         name: 'field',
+    //         methodName: "field",
+    //         displayText: "Please select the Field of the table"
+    //     }, {
+    //         name: "order",
+    //         methodName: "list",
+    //         displayText: "Please select the order",
+    //         value: ["DESC", "ASC"]
+    //     }],
+    //     click: function() {
+    //         var operationParam = {},
+    //             index = 0,
+    //             thisOp = operationArray.sort,
+    //             localConfig = thisOp.config,
+    //             config_i = localConfig[index]
+    //         callBack = function() {
+    //             if (index < localConfig.length) {
+    //                 operationParam[config_i.name] = document.getElementById("txt_" + config_i.name + "_" + index).value;
+    //                 index += 1;
+    //                 config_i = localConfig[index];
+    //                 if (index == localConfig.length) {
+    //                     operationArray.sort.operation(operationParam);
+    //                 } else {
+    //                     // put the comment
+    //                     ui.update_comment(config_i.displayText);
+    //                     // create the input
+    //                     ui["create_" + config_i.methodName](operationParam, config_i.name + "_" + index, config_i.value);
+    //                 }
+    //             } else {
+    //                 operationArray.sort.operation(operationParam);
+    //             }
+    //         };
+    //         // clear the ui
+    //         ui.clear_ui();
+    //         // put the comment
+    //         ui.update_comment(config_i.displayText);
+    //         // create the first input
+    //         ui["create_" + config_i.methodName](operationParam, config_i.name + "_" + index, config_i.value);
+    //         // create the button
+    //         ui.create_button(callBack);
 
-        },
-        operation: function(config) {
-            console.log(config);
-            var b = new Benchmark("sort");
-            b.startTimer();
-            // do the operation here
-            b.stopTimer();
-        }
-    },
+    //     },
+    //     operation: function(config) {
+    //         console.log(config);
+    //         var b = new Benchmark("sort");
+    //         var sortMethod = (config.query.length)?config.query.toLowerCase():"bubble";
+    //         if(!dataStore[config.table].data.length) {
+    //              alert("Please insert data to sort");
+    //          } else{
+    //             if(isNaN(parseFloat(dataStore[config.table].data[0][config.attributes]))) {
+    //                 alert("Only numeric sort still now");
+    //                 return false;
+    //             } else {
+    //                 operationArray.grouping.performSort(config, records);
+    //             }    
+    //          }
+            
+    //         b.startTimer();
+            
+    //         b.stopTimer();
+    //     }
+    // },
     
     search: {
         config: [{
@@ -144,10 +156,45 @@ var operationArray = {
 
             ui.create_button(callBack, "grouping");
         },
-        operation: function(config) {console.log(config);
+        operation: function(config) {
             var returnObject = {};
-            // do the operation here
+            if(dataStore[config.table].data.length) {
+                switch(config.suboperation) {
+                    case "sort":
+                        if(!isNaN(parseFloat(dataStore[config.table].data[0][config.attributes]))) {
+                            operationArray.grouping.performSort(config, dataStore[config.table].data);
+                        } else {
+                             alert("Only numeric sort still now");
+                             return false
+                         }
+                    break;
+                    case "filter":
+                        alert("Still in development");
+                        return false;
+                    break;
+                    case "highlight":
+                        alert("Still in development");
+                        return false;
+                    break;
+                    case "aggregate":
+                        alert("Still in development");
+                        return false;
+                    break;
+                }
+            } else {
+                alert("please enter table data to perform operation");
+                return false;
+            }
         },
-    
+        performSort: function(config, records) {
+            var sortType = (typeof config.query!="undefined"&&config.query.trim()!="")?(config.query.trim()):"bubble";
+            var b = new Benchmark("grouping"+"_"+((typeof config.suboperation!="undefined")?config.suboperation:"sort")+"_"+sortType);
+            var sortObject = new Sort();
+            var responseObject = {};
+            responseObject.remarks = "operation "+((typeof config.suboperation!="undefined")?config.suboperation:"sort")+" performed using "+sortType+" method on"+records.length+" numbers of data";
+            b.startTimer();
+            sortObject[sortType+"Sort"](records, config.attributes);
+            b.stopTimer(responseObject);
+        }
     }
 }
