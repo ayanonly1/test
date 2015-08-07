@@ -3,6 +3,23 @@
 <head>
     <title>FusionCharts Dev Samples</title>
     <link href="main.css" type="text/css" rel="stylesheet">
+    <script type="text/javascript">
+    var url = window.location.href;
+    if(url.indexOf('table')!=-1 || url.indexOf('data-limit')!=-1) {
+        var queryStringArray = url.split("?").pop().split("&");
+        var dataLimit = 1000;
+        var tableName = "order";
+        for(var index in queryStringArray) {
+            if(queryStringArray[index].indexOf("table")!=-1) {
+                tableName = queryStringArray[index].split("=").pop();
+            }
+            if(queryStringArray[index].indexOf("data-limit")!=-1) {
+                dataLimit = parseInt(queryStringArray[index].split("=").pop());   
+            }
+        }
+        alert(tableName+" "+dataLimit);
+    }
+    </script>
     <script type="text/javascript" src="sort.js"></script>
     <script type="text/javascript" src="nedb.js"></script>
     <script type="text/javascript" src="lib.js"></script>
