@@ -1,30 +1,42 @@
 <!doctype html>
 <html>
 <head>
+    
     <title>FusionCharts Dev Samples</title>
     <link href="main.css" type="text/css" rel="stylesheet">
-    <script type="text/javascript">
-    var url = window.location.href;
-    if(url.indexOf('table')!=-1 || url.indexOf('data-limit')!=-1) {
-        var queryStringArray = url.split("?").pop().split("&");
-        var dataLimit = 1000;
-        var tableName = "order";
-        for(var index in queryStringArray) {
-            if(queryStringArray[index].indexOf("table")!=-1) {
-                tableName = queryStringArray[index].split("=").pop();
-            }
-            if(queryStringArray[index].indexOf("data-limit")!=-1) {
-                dataLimit = parseInt(queryStringArray[index].split("=").pop());   
-            }
-        }
-        alert(tableName+" "+dataLimit);
-    }
-    </script>
+    
     <script type="text/javascript" src="sort.js"></script>
     <script type="text/javascript" src="nedb.js"></script>
     <script type="text/javascript" src="lib.js"></script>
     <script type="text/javascript" src="data.js"></script>
     <script type="text/javascript">
+    var url = window.location.href;
+    var globalTableName = "order";
+    var globalDataLimit = 1000;
+    if(url.indexOf('table')!=-1 || url.indexOf('data-limit')!=-1) {
+        var queryStringArray = url.split("?").pop().split("&");
+        
+        for(var index in queryStringArray) {
+            if(queryStringArray[index].indexOf("table")!=-1) {
+                globalTableName = queryStringArray[index].split("=").pop();
+            }
+            if(queryStringArray[index].indexOf("data-limit")!=-1) {
+                globalDataLimit = parseInt(queryStringArray[index].split("=").pop());   
+            }
+        }
+        if(globalDataLimit>10000000) {
+            globalDataLimit = 10000000
+        }
+        var fileName = globalTableName+"_data_"+globalDataLimit+".js";
+        var script = document.createElement("script");
+        script.setAttribute('type', 'text/javascript');
+        script.setAttribute('src', 'data/json/'+fileName);
+        document.head.appendChild(script);
+        
+    }
+    </script>
+    <script type="text/javascript">
+
     window.benchmarkTableElements = [{
         name: "OperationName",
         manipulate: function() {
@@ -90,19 +102,28 @@
     });
     function addTableData() {
         var sel = document.getElementById("table_add");
-        name = sel.options[sel.selectedIndex].value;
-        generateData(parseInt(document.getElementById("numrow").value, 10), dataStore[name], function() {
-            if(document.getElementById("dataLength_"+name)) {
-                mainDatabase[name].insert(dataStore[name].data);
-                displayContent(name);
-                dataStore[name].data = [];
-            }    
-        });
+        if(sel.value!=globalTableName) {
+            alert("Data file not found");
+            return false;
+        } else {
+            mainDatabase[sel.value].find({}, function(error, recordSet){alert(recordSet.length);
+                if(recordSet.length>=globalDataLimit) {
+                    alert("Data file doesn't contain more data");
+                    return false;
+                } else {
+                    var startIndex = 0;
+                    if(!recordSet.length) {
+                        startIndex = 0;
+                    } else {
+                        startIndex = recordSet.length-1;
+                    }
+                    mainDatabase[name].insert(dataStore[name].data.slice(startIndex, (startIndex+parseInt(document.getElementById("numrow").value))));                    
+                }
+            });    
+        }
         
     }
 
-    
-    
     </script>
 </head>
 
