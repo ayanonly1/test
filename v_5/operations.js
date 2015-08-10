@@ -73,41 +73,41 @@ var operationArray = {
     //     }
     // },
     
-    search: {
-        config: [{
-            name: 'table',
-            methodName: "table",
-            displayText: "Please select the table"
-        }, {
-            name: 'query',
-            methodName: "query",
-            displayText: "Please enter the query for search"
-        }],
-        click: function() {
-            var operationParam = {},
-                index = 0,
-                callBack = function() {
-                    if (index == operationArray.search.config.length - 1) {
-                        operationParam[operationArray.search.config[index].name] = document.getElementById("txt_" + operationArray.search.config[index].name + "_" + index).value;
-                        operationArray.search.operation(operationParam);
-                    } else {
-                        operationParam[operationArray.search.config[index].name] = document.getElementById("txt_" + operationArray.search.config[index].name + "_" + index).value;
-                        index += 1;
-                        ui["create_" + operationArray.search.config[index].methodName](operationParam, operationArray.search.config[index].name + "_" + index);
-                    }
-                };
-            ui.clear_ui();
-            ui["create_" + operationArray.search.config[index].methodName](operationParam, operationArray.search.config[index].name + "_" + index);
-            ui.create_button(callBack, "search");
-        },
-        operation: function(config) {console.log(config);
-            var b = new Benchmark("search");
-            b.startTimer();
-            b.stopTimer();
-            // do the operation here
+    // search: {
+    //     config: [{
+    //         name: 'table',
+    //         methodName: "table",
+    //         displayText: "Please select the table"
+    //     }, {
+    //         name: 'query',
+    //         methodName: "query",
+    //         displayText: "Please enter the query for search"
+    //     }],
+    //     click: function() {
+    //         var operationParam = {},
+    //             index = 0,
+    //             callBack = function() {
+    //                 if (index == operationArray.search.config.length - 1) {
+    //                     operationParam[operationArray.search.config[index].name] = document.getElementById("txt_" + operationArray.search.config[index].name + "_" + index).value;
+    //                     operationArray.search.operation(operationParam);
+    //                 } else {
+    //                     operationParam[operationArray.search.config[index].name] = document.getElementById("txt_" + operationArray.search.config[index].name + "_" + index).value;
+    //                     index += 1;
+    //                     ui["create_" + operationArray.search.config[index].methodName](operationParam, operationArray.search.config[index].name + "_" + index);
+    //                 }
+    //             };
+    //         ui.clear_ui();
+    //         ui["create_" + operationArray.search.config[index].methodName](operationParam, operationArray.search.config[index].name + "_" + index);
+    //         ui.create_button(callBack, "search");
+    //     },
+    //     operation: function(config) {console.log(config);
+    //         var b = new Benchmark("search");
+    //         b.startTimer();
+    //         b.stopTimer();
+    //         // do the operation here
 
-        }
-    },
+    //     }
+    // },
     
     grouping: {
         config: [{
@@ -161,7 +161,7 @@ var operationArray = {
             if(dataStore[config.table].data.length) {
                 switch(config.suboperation) {
                     case "sort":
-                        if(!isNaN(parseFloat(dataStore[config.table].data[0][config.attributes]))) {
+                        if(!isNaN(parseFloat(dataStore[config.table].data[0][config.attributes]))) {alert("x");
                             operationArray.grouping.performSort(config, dataStore[config.table].data);
                         } else {
                              alert("Only numeric sort still now");
