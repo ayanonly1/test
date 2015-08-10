@@ -161,7 +161,7 @@ var operationArray = {
             if(dataStore[config.table].data.length) {
                 switch(config.suboperation) {
                     case "sort":
-                        if(!isNaN(parseFloat(dataStore[config.table].data[0][config.attributes]))) {alert("x");
+                        if(!isNaN(parseFloat(dataStore[config.table].data[0][config.attributes]))) {
                             operationArray.grouping.performSort(config, dataStore[config.table].data);
                         } else {
                              alert("Only numeric sort still now");
